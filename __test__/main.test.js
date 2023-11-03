@@ -1,23 +1,11 @@
 var converter = require ('../build/src/main.js').default;
 
-describe('greeter function', () => {
+describe('converter function', () => {
   
 
   // Assert greeter result
-  it('Sample test', () => {
+  it('Sample conversion test', () => {
   
-    expect(converter('select Id from Account')).toBe(`query Accounts {
-        uiapi {
-          query {
-             Account  {
-        edges {
-          node {
-Id
-          }
-        }
-      }
-          }
-        }
-      }`);
+    expect(converter('select Id, Name, (select Id from Opportunities) from Account limit 3')).toMatchSnapshot();
   });
 });

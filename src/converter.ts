@@ -1,5 +1,5 @@
 
-function getWhereOperator(cond: any): string {
+export function getWhereOperator(cond: any): string {
     switch (cond.operator) {
         case '=':
             return 'eq'
@@ -23,6 +23,8 @@ function getWhereOperator(cond: any): string {
 
 }
 
+/*
+to do
 function getWhereField(cond: any) {
     let value: any
 
@@ -33,34 +35,30 @@ function getWhereField(cond: any) {
     }
 
     return `${cond.field}: { ${getWhereOperator(cond)} : ${value} }  `
-}
+}*/
 
-function getField(field: any): string {
-    const { type, ...rawField } = field
+function getField(field: any): any {
+    const { type } = field
     if (type === "FieldRelationship") {
-
-        return (
-            `                    ${field.relationships[0]} {
-                        ${getField(rawField)}
-                    }`
-        )
+        // to do
+        return true
     }
     if (field.field) {
         if (field.field === "Id") {
-            return field.field
+            return true
         }
-        return (
-            `                    ${field.field} {
-                        value
-                    }`
-        )
+        return {
+            value: true
+        }
     }
     if (field.functionName?.toLowerCase() === 'tolabel' && field.parameters) {
-        return (
-            `                    ${field.parameters[0]} {
-                        display
-                    }`
-        )
+        // todo
+        return {
+            [field.parameters[0]]: {
+                display: true
+            }
+        }
+
     }
 
     if (field.type === "FieldSubquery") {
@@ -70,37 +68,45 @@ function getField(field: any): string {
 }
 
 function getWhereClause(parsedQuery: any) {
-    if (!parsedQuery.where && parsedQuery.limit) return `(first: ${parsedQuery.limit})`
+    const res: any = {
 
-    if (!parsedQuery.where) return ''
+    }
+    if (parsedQuery.limit) {
+        res.first = parsedQuery.limit
+    }
+    return res
+}
 
-    return `(${parsedQuery.limit ? `first: ${parsedQuery.limit},` : ''}
-        where: { ${getWhereField(parsedQuery.where.left)} }
-        ) `
+function getQueryNode(parsedQuery: any): any {
+
+    return parsedQuery.fields?.reduce((prev, cur) => {
+        prev[cur.field || cur.subquery?.relationshipName] = getField(cur)
+        return prev
+    }, {})
 
 }
 
-function getQuery(parsedQuery: any) {
+function getQuery(parsedQuery: any): any {
 
-    return ` ${parsedQuery.sObject || parsedQuery.relationshipName} ${getWhereClause(parsedQuery)} {
-        edges {
-          node {
-${parsedQuery.fields?.map(getField).join('\n')}
-          }
+    return {
+        __args: getWhereClause(parsedQuery),
+        edges: {
+            node: getQueryNode(parsedQuery)
         }
-      }`
-
+    }
 }
 
 
-export default function transfrom(parsedQuery: any, fullQuery: string): string {
-    const input = fullQuery.indexOf('$recordIds') > -1 ? '($recordIds: [ID])' : (fullQuery.indexOf('$recordId') > -1 ? '($recordId: ID)' : '')
+export default function transfrom(parsedQuery: any): object {
+    //const input = fullQuery.indexOf('$recordIds') > -1 ? '($recordIds: [ID])' : (fullQuery.indexOf('$recordId') > -1 ? '($recordId: ID)' : '')
 
-    return `query ${parsedQuery.sObject}s${input} {
-        uiapi {
-          query {
-            ${getQuery(parsedQuery)}
-          }
+    return {
+        query: {
+            uiapi: {
+                query: {
+                    [parsedQuery.sObject || parsedQuery.relationshipName]:  getQuery(parsedQuery)
+                }
+            }
         }
-      }`
+    }
 }

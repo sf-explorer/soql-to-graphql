@@ -1,21 +1,7 @@
-# SOQL to GraphQL
+// Jest Snapshot v1, https://goo.gl/fbAQLP
 
-## Installation
-
-```
-npm i @sf-explorer/soql-to-graphql
-```
-
-## Usage
-
-```js
-var converter = require ('@sf-explorer/soql-to-graphql')
-
-console.log(converter('Select Id, Name, (select Id from Opportunities) from Account limit 3'))
-```
-
-```
-query {
+exports[`greeter function Sample conversion test 1`] = `
+"query {
     uiapi {
         query {
             Account (first: 3) {
@@ -37,5 +23,5 @@ query {
             }
         }
     }
-}
-```
+}"
+`;

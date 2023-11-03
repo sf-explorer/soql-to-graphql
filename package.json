@@ -46,6 +46,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "json-to-graphql-query": "^2.2.5",
     "soql-parser-js": "^4.9.2",
     "tslib": "~2.6"
   }
