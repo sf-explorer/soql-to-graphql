@@ -1,5 +1,7 @@
 # SOQL to GraphQL
 
+[Online demo](https://sf-explorer.github.io/documentation/docs/Query/GraphQL/#playground)
+
 ## Installation
 
 ```
@@ -39,3 +41,10 @@ query {
     }
 }
 ```
+
+## Roadmap
+
+ * Where clause
+ * Additional tests
+ * FieldRelationship
+ * Query parameters
