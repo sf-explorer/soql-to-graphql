@@ -23,25 +23,45 @@ export function getWhereOperator(cond: any): string {
 
 }
 
-/*
-to do
+
 function getWhereField(cond: any) {
     let value: any
+
 
     if (cond.literalType === 'INTEGER') {
         value = parseInt(cond.value)
     } else {
-        value = JSON.stringify(cond.value).replaceAll("'", "")
+        value = JSON.stringify(cond.value).replaceAll('"', "").replaceAll("'", "")
     }
 
-    return `${cond.field}: { ${getWhereOperator(cond)} : ${value} }  `
-}*/
+    return {
+        [cond.field]: { [getWhereOperator(cond)]: value }
+    }
+}
+
+function getWhereCond(cond: any) {
+
+    if (cond.operator && cond.left && cond.right) {
+
+        return {
+            [cond.operator]: {
+                'left': getWhereCond(cond.left),
+                'right': getWhereCond(cond.right),
+            }
+        }
+    } else {
+
+        return getWhereField(cond.left || cond)
+    }
+
+}
 
 function getField(field: any): any {
-    const { type } = field
+    const { type, ...other } = field
     if (type === "FieldRelationship") {
-        // to do
-        return true
+        return {
+            [field.field]: getField(other)
+        }
     }
     if (field.field) {
         if (field.field === "Id") {
@@ -51,8 +71,7 @@ function getField(field: any): any {
             value: true
         }
     }
-    if (field.functionName?.toLowerCase() === 'tolabel' && field.parameters) {
-        // todo
+    if (field.functionName && field.parameters) {
         return {
             [field.parameters[0]]: {
                 display: true
@@ -67,12 +86,20 @@ function getField(field: any): any {
     return ''
 }
 
-function getWhereClause(parsedQuery: any) {
+function getArgs(parsedQuery: any) {
     const res: any = {
 
     }
     if (parsedQuery.limit) {
         res.first = parsedQuery.limit
+    }
+    if (parsedQuery.where) {
+        res.where = getWhereCond(parsedQuery.where)
+    }
+    if (parsedQuery.orderBy) {
+
+        const fieldName = parsedQuery.orderBy[0].field
+        res.orderBy = fieldName
     }
     return res
 }
@@ -80,7 +107,7 @@ function getWhereClause(parsedQuery: any) {
 function getQueryNode(parsedQuery: any): any {
 
     return parsedQuery.fields?.reduce((prev, cur) => {
-        prev[cur.field || cur.subquery?.relationshipName] = getField(cur)
+        prev[(cur.relationships && cur.relationships[0]) || cur.field || cur.subquery?.relationshipName || (cur.parameters && cur.parameters[0])] = getField(cur)
         return prev
     }, {})
 
@@ -89,7 +116,7 @@ function getQueryNode(parsedQuery: any): any {
 function getQuery(parsedQuery: any): any {
 
     return {
-        __args: getWhereClause(parsedQuery),
+        __args: getArgs(parsedQuery),
         edges: {
             node: getQueryNode(parsedQuery)
         }
@@ -104,7 +131,7 @@ export default function transfrom(parsedQuery: any): object {
         query: {
             uiapi: {
                 query: {
-                    [parsedQuery.sObject || parsedQuery.relationshipName]:  getQuery(parsedQuery)
+                    [parsedQuery.sObject || parsedQuery.relationshipName]: getQuery(parsedQuery)
                 }
             }
         }

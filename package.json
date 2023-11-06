@@ -1,6 +1,6 @@
 {
   "name": "@sf-explorer/soql-to-graphql",
-  "version": "0.0.1-alpha3",
+  "version": "0.0.1-alpha8",
   "description": "",
   "main": "./build/src/main.js",
   "repository": {

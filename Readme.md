@@ -1,5 +1,10 @@
 # SOQL to GraphQL
 
+This library combines 2 powerful libraries:
+- [SOQL Parser JS](https://github.com/jetstreamapp/soql-parser-js) 
+- [JSON to GraphQL](https://www.npmjs.com/package/json-to-graphql-query)
+To transform your SOQL into GraphQL
+
 [Online demo](https://sf-explorer.github.io/documentation/docs/Query/GraphQL/#playground)
 
 ## Installation
@@ -43,8 +48,4 @@ query {
 ```
 
 ## Roadmap
-
- * Where clause
- * Additional tests
- * FieldRelationship
  * Query parameters

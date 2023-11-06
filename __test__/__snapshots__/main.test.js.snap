@@ -1,15 +1,69 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`greeter function Sample conversion test 1`] = `
+exports[`converter function Advanced conversion test 1`] = `
 "query {
     uiapi {
         query {
-            Account (first: 3) {
+            Property__c (first: 3, where: {OR: {left: {Name: {eq: ":searchPattern"}}, right: {OR: {left: {City__c: {eq: ":searchPattern"}}, right: {AND: {left: {Tags__c: {eq: ":searchPattern"}}, right: {AND: {left: {Price__c: {lte: ":safeMaxPrice"}}, right: {AND: {left: {Beds__c: {gte: ":safeMinBedrooms"}}, right: {Baths__c: {gte: ":safeMinBathrooms"}}}}}}}}}}}}, orderBy: "Price__c") {
                 edges {
                     node {
                         Id
                         Name {
                             value
+                        }
+                        Address__c {
+                            value
+                        }
+                        City__c {
+                            value
+                        }
+                        State__c {
+                            value
+                        }
+                        Description__c {
+                            value
+                        }
+                        Price__c {
+                            value
+                        }
+                        Baths__c {
+                            value
+                        }
+                        Beds__c {
+                            value
+                        }
+                        Thumbnail__c {
+                            value
+                        }
+                        Location__Latitude__s {
+                            value
+                        }
+                        Location__Longitude__s {
+                            value
+                        }
+                    }
+                }
+            }
+        }
+    }
+}"
+`;
+
+exports[`converter function Simple Query: select Id, Name, Owner.Name, (select Id from Opportunities) from Account where Name like '%N' limit 3 1`] = `
+"query {
+    uiapi {
+        query {
+            Account (first: 3, where: {Name: {like: "%N"}}) {
+                edges {
+                    node {
+                        Id
+                        Name {
+                            value
+                        }
+                        Owner {
+                            Name {
+                                value
+                            }
                         }
                         Opportunities {
                             edges {
