@@ -1,6 +1,8 @@
+import { VariableType } from "json-to-graphql-query"
+import { Query, QueryBase, ValueCondition } from "soql-parser-js"
 
-export function getWhereOperator(cond: any): string {
-    switch (cond.operator) {
+export function getWhereOperator(cond: ValueCondition): string {
+    switch (cond.operator.toLowerCase()) {
         case '=':
             return 'eq'
         case '!=':
@@ -20,38 +22,38 @@ export function getWhereOperator(cond: any): string {
         default:
             return 'eq'
     }
-
 }
 
-
-function getWhereField(cond: any) {
+function getWhereField(cond: ValueCondition, input?: any) {
     let value: any
 
-
-    if (cond.literalType === 'INTEGER') {
+    if (cond.literalType === 'INTEGER' && typeof cond.value === 'string') {
         value = parseInt(cond.value)
     } else {
         value = JSON.stringify(cond.value).replaceAll('"', "").replaceAll("'", "")
+        if (value[0] === ':' && input) {
+            const key = value.replace(":", "")
+            if (input[key]) {
+                value = new VariableType(key)
+            }
+        }
     }
-
     return {
         [cond.field]: { [getWhereOperator(cond)]: value }
     }
 }
 
-function getWhereCond(cond: any) {
+function getWhereCond(cond: any, input?: any) {
 
     if (cond.operator && cond.left && cond.right) {
-
         return {
-            [cond.operator]: {
-                'left': getWhereCond(cond.left),
-                'right': getWhereCond(cond.right),
-            }
+            [cond.operator.toLowerCase()]: [
+                getWhereCond(cond.left, input),
+                getWhereCond(cond.right, input)
+            ]
         }
     } else {
-
-        return getWhereField(cond.left || cond)
+        return getWhereField(cond.left || cond, input)
     }
 
 }
@@ -77,7 +79,6 @@ function getField(field: any): any {
                 display: true
             }
         }
-
     }
 
     if (field.type === "FieldSubquery") {
@@ -86,7 +87,8 @@ function getField(field: any): any {
     return ''
 }
 
-function getArgs(parsedQuery: any) {
+function getArgs(parsedQuery: Query, input?: any) {
+
     const res: any = {
 
     }
@@ -94,29 +96,31 @@ function getArgs(parsedQuery: any) {
         res.first = parsedQuery.limit
     }
     if (parsedQuery.where) {
-        res.where = getWhereCond(parsedQuery.where)
+        res.where = getWhereCond(parsedQuery.where, input)
     }
     if (parsedQuery.orderBy) {
-
         const fieldName = parsedQuery.orderBy[0].field
-        res.orderBy = fieldName
+        res.orderBy = {
+            [fieldName]: { order: parsedQuery.orderBy[0].order || "ASC" }
+        }
     }
+   
     return res
 }
 
-function getQueryNode(parsedQuery: any): any {
+function getQueryNode(parsedQuery: QueryBase): any {
 
-    return parsedQuery.fields?.reduce((prev, cur) => {
+    return parsedQuery.fields?.reduce((prev, cur: any) => {
         prev[(cur.relationships && cur.relationships[0]) || cur.field || cur.subquery?.relationshipName || (cur.parameters && cur.parameters[0])] = getField(cur)
         return prev
     }, {})
 
 }
 
-function getQuery(parsedQuery: any): any {
+function getQuery(parsedQuery: QueryBase, input?: any): any {
 
     return {
-        __args: getArgs(parsedQuery),
+        __args: getArgs(parsedQuery, input),
         edges: {
             node: getQueryNode(parsedQuery)
         }
@@ -124,14 +128,13 @@ function getQuery(parsedQuery: any): any {
 }
 
 
-export default function transfrom(parsedQuery: any): object {
-    //const input = fullQuery.indexOf('$recordIds') > -1 ? '($recordIds: [ID])' : (fullQuery.indexOf('$recordId') > -1 ? '($recordId: ID)' : '')
-
+export default function transfrom(parsedQuery: Query, input?: any): object {
     return {
         query: {
+            __variables: input,
             uiapi: {
                 query: {
-                    [parsedQuery.sObject || parsedQuery.relationshipName]: getQuery(parsedQuery)
+                    [parsedQuery.sObject]: getQuery(parsedQuery, input)
                 }
             }
         }

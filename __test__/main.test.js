@@ -9,6 +9,13 @@ describe('converter function', () => {
     expect(converter(simpleQuery)).toMatchSnapshot();
   });
 
+  const queryWithVar = "select Id, Name from Account where (Id = ':recordId' and Name like ':name') or BillingCountry like ':name' limit 3"
+
+  it('Query with var ' + queryWithVar, () => {
+
+    expect(converter(queryWithVar, { recordId: 'ID!', name: 'String = "%"', country: 'String' })).toMatchSnapshot();
+  });
+
 
 
   const query = `SELECT
@@ -33,14 +40,19 @@ WHERE
   AND Beds__c >= ':safeMinBedrooms'
   AND Baths__c >= ':safeMinBathrooms'
 WITH USER_MODE
-ORDER BY Price__c
+ORDER BY Price__c desc
 LIMIT 3
 OFFSET 3
 `
 
   it('Advanced conversion test', () => {
 
-    expect(converter(query)).toMatchSnapshot();
+    expect(converter(query, {
+      searchPattern: 'String ="%"',
+      safeMaxPrice: 'Currency = 10000',
+      safeMinBedrooms: 'Double = 3',
+      safeMinBathrooms: 'Double = 2',
+    })).toMatchSnapshot();
   });
 
 });

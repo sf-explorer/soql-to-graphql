@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`converter function Advanced conversion test 1`] = `
-"query {
+"query ($searchPattern: String ="%", $safeMaxPrice: Number = 10000, $safeMinBedrooms: Number = 3, $safeMinBathrooms: Number = 2) {
     uiapi {
         query {
-            Property__c (first: 3, where: {OR: {left: {Name: {eq: ":searchPattern"}}, right: {OR: {left: {City__c: {eq: ":searchPattern"}}, right: {AND: {left: {Tags__c: {eq: ":searchPattern"}}, right: {AND: {left: {Price__c: {lte: ":safeMaxPrice"}}, right: {AND: {left: {Beds__c: {gte: ":safeMinBedrooms"}}, right: {Baths__c: {gte: ":safeMinBathrooms"}}}}}}}}}}}}, orderBy: "Price__c") {
+            Property__c (first: 3, where: {or: [{Name: {eq: $searchPattern}}, {or: [{City__c: {eq: $searchPattern}}, {and: [{Tags__c: {eq: $searchPattern}}, {and: [{Price__c: {lte: $safeMaxPrice}}, {and: [{Beds__c: {gte: $safeMinBedrooms}}, {Baths__c: {gte: $safeMinBathrooms}}]}]}]}]}]}, orderBy: {Price__c: {order: DESC}}) {
                 edges {
                     node {
                         Id
@@ -39,6 +39,25 @@ exports[`converter function Advanced conversion test 1`] = `
                             value
                         }
                         Location__Longitude__s {
+                            value
+                        }
+                    }
+                }
+            }
+        }
+    }
+}"
+`;
+
+exports[`converter function Query with var select Id, Name from Account where (Id = ':recordId' and Name like ':name') or BillingCountry like ':name' limit 3 1`] = `
+"query ($recordId: ID!, $name: String = "%", $country: String) {
+    uiapi {
+        query {
+            Account (first: 3, where: {and: [{Id: {eq: $recordId}}, {or: [{Name: {like: $name}}, {BillingCountry: {like: $name}}]}]}) {
+                edges {
+                    node {
+                        Id
+                        Name {
                             value
                         }
                     }

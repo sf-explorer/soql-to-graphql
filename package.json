@@ -1,7 +1,7 @@
 {
   "name": "@sf-explorer/soql-to-graphql",
-  "version": "0.0.1-alpha8",
-  "description": "",
+  "version": "0.0.1-alpha9",
+  "description": "Transform your SOQL queries into GraphQL",
   "main": "./build/src/main.js",
   "repository": {
     "type": "git",

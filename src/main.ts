@@ -5,9 +5,8 @@ import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 
 
 
-export default function soql2graphql(q: string) {
+export default function soql2graphql(q: string, variables?: any) {
     const parseResult = parseQuery(q);
-    const jsonQ = converter(parseResult)
-    return jsonToGraphQLQuery(jsonQ, { pretty: true });
-    
+    const jsonQ = converter(parseResult, variables)
+    return jsonToGraphQLQuery(jsonQ, { pretty: true }).replaceAll('"ASC"', 'ASC').replaceAll('"DESC"', 'DESC')
 }
