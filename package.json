@@ -1,6 +1,6 @@
 {
   "name": "@sf-explorer/soql-to-graphql",
-  "version": "0.0.1-alpha9",
+  "version": "0.0.1-alpha12",
   "description": "Transform your SOQL queries into GraphQL",
   "main": "./build/src/main.js",
   "repository": {
@@ -41,7 +41,7 @@
     "build:watch": "tsc -w -p tsconfig.json",
     "build:release": "npm run clean && tsc -p tsconfig.release.json",
     "lint": "eslint . --ext .ts --ext .mts",
-    "test": "jest --coverage",
+    "test": "jest --coverage -u",
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch"
   },

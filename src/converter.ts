@@ -31,7 +31,7 @@ function getWhereField(cond: ValueCondition, input?: any) {
         value = parseInt(cond.value)
     } else {
         value = JSON.stringify(cond.value).replaceAll('"', "").replaceAll("'", "")
-        if (value[0] === ':' && input) {
+        if (input && (value[0] === ':' || cond.literalType === 'APEX_BIND_VARIABLE')) {
             const key = value.replace(":", "")
             if (input[key]) {
                 value = new VariableType(key)

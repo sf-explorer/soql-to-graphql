@@ -1,10 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`converter function Advanced conversion test 1`] = `
-"query ($searchPattern: String ="%", $safeMaxPrice: Number = 10000, $safeMinBedrooms: Number = 3, $safeMinBathrooms: Number = 2) {
+"query ($searchPattern: String ="%", $safeMaxPrice: Currency = 10000, $safeMinBedrooms: Double = 3, $cursorSize: Double = 3, $safeMinBathrooms: Double = 2) {
     uiapi {
         query {
-            Property__c (first: 3, where: {or: [{Name: {eq: $searchPattern}}, {or: [{City__c: {eq: $searchPattern}}, {and: [{Tags__c: {eq: $searchPattern}}, {and: [{Price__c: {lte: $safeMaxPrice}}, {and: [{Beds__c: {gte: $safeMinBedrooms}}, {Baths__c: {gte: $safeMinBathrooms}}]}]}]}]}]}, orderBy: {Price__c: {order: DESC}}) {
+            Property__c (first: 3, where: {or: [{Name: {like: $searchPattern}}, {or: [{City__c: {like: $searchPattern}}, {and: [{Tags__c: {like: $searchPattern}}, {and: [{Price__c: {lte: $safeMaxPrice}}, {and: [{Beds__c: {gte: $safeMinBedrooms}}, {Baths__c: {gte: $safeMinBathrooms}}]}]}]}]}]}, orderBy: {Price__c: {order: DESC}}) {
                 edges {
                     node {
                         Id
@@ -49,11 +49,11 @@ exports[`converter function Advanced conversion test 1`] = `
 }"
 `;
 
-exports[`converter function Query with var select Id, Name from Account where (Id = ':recordId' and Name like ':name') or BillingCountry like ':name' limit 3 1`] = `
+exports[`converter function Query with var select Id, Name from Account where (Id = :recordId and Name like :name) or BillingCountry like :country limit 3 1`] = `
 "query ($recordId: ID!, $name: String = "%", $country: String) {
     uiapi {
         query {
-            Account (first: 3, where: {and: [{Id: {eq: $recordId}}, {or: [{Name: {like: $name}}, {BillingCountry: {like: $name}}]}]}) {
+            Account (first: 3, where: {and: [{Id: {eq: $recordId}}, {or: [{Name: {like: $name}}, {BillingCountry: {like: $country}}]}]}) {
                 edges {
                     node {
                         Id

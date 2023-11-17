@@ -1,11 +1,12 @@
 # SOQL to GraphQL
 
-This library combines 2 powerful libraries:
-- [SOQL Parser JS](https://github.com/jetstreamapp/soql-parser-js) 
-- [JSON to GraphQL](https://www.npmjs.com/package/json-to-graphql-query)
-To transform your SOQL into GraphQL
+> Transform your SOQL into GraphQL with ease
 
-[Online demo](https://sf-explorer.github.io/documentation/docs/Query/GraphQL/#playground)
+![logo](./logo.png)
+
+Having challenges with GraphQL syntax? Already an SOQL ninja? `soql-to-graphql` is for you.
+
+Check out the [Playground](https://sf-explorer.github.io/documentation/docs/Query/GraphQL/#playground)
 
 ## Installation
 
@@ -94,3 +95,8 @@ query ($criteria: String = "%") {
   }
 }
 ```
+
+## Credits
+This utility would be nothing without these 2 powerful libraries:
+- [SOQL Parser JS](https://github.com/jetstreamapp/soql-parser-js) 
+- [JSON to GraphQL](https://www.npmjs.com/package/json-to-graphql-query)

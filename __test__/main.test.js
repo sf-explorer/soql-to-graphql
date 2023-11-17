@@ -9,7 +9,7 @@ describe('converter function', () => {
     expect(converter(simpleQuery)).toMatchSnapshot();
   });
 
-  const queryWithVar = "select Id, Name from Account where (Id = ':recordId' and Name like ':name') or BillingCountry like ':name' limit 3"
+  const queryWithVar = "select Id, Name from Account where (Id = :recordId and Name like :name) or BillingCountry like :country limit 3"
 
   it('Query with var ' + queryWithVar, () => {
 
@@ -33,12 +33,12 @@ describe('converter function', () => {
   Location__Longitude__s
 FROM Property__c
 WHERE
-  (Name LIKE ':searchPattern'
-  OR City__c LIKE ':searchPattern'
-  OR Tags__c LIKE ':searchPattern')
-  AND Price__c <= ':safeMaxPrice'
-  AND Beds__c >= ':safeMinBedrooms'
-  AND Baths__c >= ':safeMinBathrooms'
+  (Name LIKE :searchPattern
+  OR City__c LIKE :searchPattern
+  OR Tags__c LIKE :searchPattern)
+  AND Price__c <= :safeMaxPrice
+  AND Beds__c >= :safeMinBedrooms
+  AND Baths__c >= :safeMinBathrooms
 WITH USER_MODE
 ORDER BY Price__c desc
 LIMIT 3
@@ -51,6 +51,7 @@ OFFSET 3
       searchPattern: 'String ="%"',
       safeMaxPrice: 'Currency = 10000',
       safeMinBedrooms: 'Double = 3',
+      cursorSize: 'Double = 3',
       safeMinBathrooms: 'Double = 2',
     })).toMatchSnapshot();
   });
