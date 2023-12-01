@@ -9,7 +9,7 @@ export function getWhereOperator(cond: ValueCondition): string {
             return 'neq'
         case 'like':
             return 'like'
-        case 'IN':
+        case 'in':
             return 'in'
         case '>':
             return 'gt'
@@ -26,10 +26,13 @@ export function getWhereOperator(cond: ValueCondition): string {
 
 function getWhereField(cond: ValueCondition, input?: any) {
     let value: any
-
+    
     if (cond.literalType === 'INTEGER' && typeof cond.value === 'string') {
         value = parseInt(cond.value)
-    } else {
+    } else if (Array.isArray(cond.value)) {
+        value = cond.value.map(item => JSON.stringify(item).replaceAll('"', "").replaceAll("'", ""))
+    }
+    else {
         value = JSON.stringify(cond.value).replaceAll('"', "").replaceAll("'", "")
         if (input && (value[0] === ':' || cond.literalType === 'APEX_BIND_VARIABLE')) {
             const key = value.replace(":", "")
@@ -104,7 +107,7 @@ function getArgs(parsedQuery: Query, input?: any) {
             [fieldName]: { order: parsedQuery.orderBy[0].order || "ASC" }
         }
     }
-   
+
     return res
 }
 

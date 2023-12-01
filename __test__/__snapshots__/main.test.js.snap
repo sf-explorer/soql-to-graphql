@@ -4,7 +4,7 @@ exports[`converter function Advanced conversion test 1`] = `
 "query ($searchPattern: String ="%", $safeMaxPrice: Currency = 10000, $safeMinBedrooms: Double = 3, $cursorSize: Double = 3, $safeMinBathrooms: Double = 2) {
     uiapi {
         query {
-            Property__c (first: 3, where: {or: [{Name: {like: $searchPattern}}, {or: [{City__c: {like: $searchPattern}}, {and: [{Tags__c: {like: $searchPattern}}, {and: [{Price__c: {lte: $safeMaxPrice}}, {and: [{Beds__c: {gte: $safeMinBedrooms}}, {Baths__c: {gte: $safeMinBathrooms}}]}]}]}]}]}, orderBy: {Price__c: {order: DESC}}) {
+            Property__c (first: 3, where: {or: [{Name: {like: $searchPattern}}, {or: [{City__c: {like: $searchPattern}}, {and: [{Tags__c: {like: $searchPattern}}, {and: [{Price__c: {lte: $safeMaxPrice}}, {and: [{Beds__c: {gt: $safeMinBedrooms}}, {Baths__c: {gte: $safeMinBathrooms}}]}]}]}]}]}, orderBy: {Price__c: {order: DESC}}) {
                 edges {
                     node {
                         Id
@@ -89,6 +89,30 @@ exports[`converter function Simple Query: select Id, Name, Owner.Name, (select I
                                 node {
                                     Id
                                 }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}"
+`;
+
+exports[`converter function in Query: select Id, Name, Owner.Name from Account where Id in ('0030700000ywKMfAAM') limit 3 1`] = `
+"query {
+    uiapi {
+        query {
+            Account (first: 3, where: {Id: {in: ["0030700000ywKMfAAM"]}}) {
+                edges {
+                    node {
+                        Id
+                        Name {
+                            value
+                        }
+                        Owner {
+                            Name {
+                                value
                             }
                         }
                     }

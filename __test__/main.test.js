@@ -37,7 +37,7 @@ WHERE
   OR City__c LIKE :searchPattern
   OR Tags__c LIKE :searchPattern)
   AND Price__c <= :safeMaxPrice
-  AND Beds__c >= :safeMinBedrooms
+  AND Beds__c > :safeMinBedrooms
   AND Baths__c >= :safeMinBathrooms
 WITH USER_MODE
 ORDER BY Price__c desc
@@ -53,7 +53,13 @@ OFFSET 3
       safeMinBedrooms: 'Double = 3',
       cursorSize: 'Double = 3',
       safeMinBathrooms: 'Double = 2',
-    })).toMatchSnapshot();
-  });
+    })).toMatchSnapshot()
+  })
 
-});
+  const inQuery = "select Id, Name, Owner.Name from Account where Id in ('0030700000ywKMfAAM') limit 3"
+  it('in Query: ' + inQuery, () => {
+
+    expect(converter(inQuery)).toMatchSnapshot()
+  })
+
+})

@@ -11,7 +11,7 @@ const config = {
     testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(m)?js$',
     coverageDirectory: 'coverage',
     collectCoverageFrom: [
-        'src/**/*.js',
+        'build/**/*.js',
         'src/**/*.mts',
         '!src/**/*.d.ts',
         '!src/**/*.d.mts',
