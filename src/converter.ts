@@ -1,6 +1,10 @@
 import { VariableType } from "json-to-graphql-query"
 import { Query, QueryBase, ValueCondition } from "soql-parser-js"
 
+export interface TInput {
+    [prop: string]: string
+}
+
 export function getWhereOperator(cond: ValueCondition): string {
     switch (cond.operator.toLowerCase()) {
         case '=':
@@ -24,9 +28,9 @@ export function getWhereOperator(cond: ValueCondition): string {
     }
 }
 
-function getWhereField(cond: ValueCondition, input?: any) {
+function getWhereField(cond: ValueCondition, input?: TInput) {
     let value: any
-    
+
     if (cond.literalType === 'INTEGER' && typeof cond.value === 'string') {
         value = parseInt(cond.value)
     } else if (Array.isArray(cond.value)) {
@@ -46,7 +50,7 @@ function getWhereField(cond: ValueCondition, input?: any) {
     }
 }
 
-function getWhereCond(cond: any, input?: any) {
+function getWhereCond(cond: any, input?: TInput) {
 
     if (cond.operator && cond.left && cond.right) {
         return {
@@ -61,7 +65,7 @@ function getWhereCond(cond: any, input?: any) {
 
 }
 
-function getField(field: any): any {
+function getField(field: any): object | boolean | string {
     const { type, ...other } = field
     if (type === "FieldRelationship") {
         return {
@@ -77,11 +81,15 @@ function getField(field: any): any {
         }
     }
     if (field.functionName && field.parameters) {
-        return {
-            [field.parameters[0]]: {
-                display: true
+        if (field.functionName === 'toLabel') {
+            return {
+                label: true
             }
         }
+        return {
+            label: true
+        }
+
     }
 
     if (field.type === "FieldSubquery") {
@@ -90,7 +98,7 @@ function getField(field: any): any {
     return ''
 }
 
-function getArgs(parsedQuery: Query, input?: any) {
+function getArgs(parsedQuery: Query, input?: TInput) {
 
     const res: any = {
 
@@ -111,7 +119,7 @@ function getArgs(parsedQuery: Query, input?: any) {
     return res
 }
 
-function getQueryNode(parsedQuery: QueryBase): any {
+function getQueryNode(parsedQuery: QueryBase): object {
 
     return parsedQuery.fields?.reduce((prev, cur: any) => {
         prev[(cur.relationships && cur.relationships[0]) || cur.field || cur.subquery?.relationshipName || (cur.parameters && cur.parameters[0])] = getField(cur)
@@ -120,7 +128,7 @@ function getQueryNode(parsedQuery: QueryBase): any {
 
 }
 
-function getQuery(parsedQuery: QueryBase, input?: any): any {
+function getQuery(parsedQuery: QueryBase, input?: TInput): object {
 
     return {
         __args: getArgs(parsedQuery, input),
@@ -131,7 +139,7 @@ function getQuery(parsedQuery: QueryBase, input?: any): any {
 }
 
 
-export default function transfrom(parsedQuery: Query, input?: any): object {
+export default function transfrom(parsedQuery: Query, input?: TInput): object {
     return {
         query: {
             __variables: input,
