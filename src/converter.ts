@@ -1,5 +1,5 @@
 import { VariableType } from "json-to-graphql-query"
-import { Query, QueryBase, ValueCondition } from "soql-parser-js"
+import { Query, QueryBase, ValueCondition } from "@jetstreamapp/soql-parser-js"
 
 export interface TInput {
     [prop: string]: string

@@ -1,6 +1,6 @@
 {
   "name": "@sf-explorer/soql-to-graphql",
-  "version": "0.0.1-alpha16",
+  "version": "0.0.2",
   "description": "Transform your SOQL queries into GraphQL",
   "main": "./main.js",
   "repository": {
@@ -46,8 +46,8 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@jetstreamapp/soql-parser-js": "^6.1.0",
     "json-to-graphql-query": "^2.2.5",
-    "soql-parser-js": "^4.9.2",
     "tslib": "~2.6"
   }
 }

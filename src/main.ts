@@ -1,5 +1,5 @@
 import converter, { TInput } from './converter'
-import { parseQuery } from 'soql-parser-js'
+import { parseQuery } from '@jetstreamapp/soql-parser-js'
 import { jsonToGraphQLQuery } from 'json-to-graphql-query'
 
 

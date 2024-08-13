@@ -62,4 +62,12 @@ OFFSET 3
     expect(converter(inQuery)).toMatchSnapshot()
   })
 
+  const subWhere = "select Id FROM OrderItem WHERE Order.AccountId = :accountId limit 3"
+  it('Sub where Query: ' + subWhere, () => {
+
+    expect(converter(subWhere)).toMatchSnapshot()
+  })
+
+  
+
 })

@@ -99,6 +99,22 @@ exports[`converter function Simple Query: select Id, Name, Owner.Name, (select I
 }"
 `;
 
+exports[`converter function Sub where Query: select Id FROM OrderItem WHERE Order.AccountId = :accountId limit 3 1`] = `
+"query {
+    uiapi {
+        query {
+            OrderItem (first: 3, where: {Order: {AccountId: {eq: "accountId"}}}) {
+                edges {
+                    node {
+                        Id
+                    }
+                }
+            }
+        }
+    }
+}"
+`;
+
 exports[`converter function in Query: select Id, Name, Owner.Name from Account where Id in ('0030700000ywKMfAAM') limit 3 1`] = `
 "query {
     uiapi {
