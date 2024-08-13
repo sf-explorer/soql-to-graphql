@@ -29,7 +29,15 @@ export function getWhereOperator(cond: ValueCondition): string {
 }
 
 function getWhereField(cond: ValueCondition, input?: TInput) {
-    let value: any
+
+    if(cond.field.includes('.')) {
+        const [outer, ...rest] = cond.field.split('.');
+        return {
+            [outer]: {...getWhereField({...cond, field: rest.join('.')}, input)}
+        };
+    }
+
+    let value: any;
 
     if (cond.literalType === 'INTEGER' && typeof cond.value === 'string') {
         value = parseInt(cond.value)
