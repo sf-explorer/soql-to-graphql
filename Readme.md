@@ -1,5 +1,7 @@
 # SOQL to GraphQL
 
+[![npm version](https://badge.fury.io/js/@sf-explorer%2Fsoql-to-graphql.svg)](https://badge.fury.io/js/@sf-explorer%2Fsoql-to-graphql)
+
 > Transform your SOQL into GraphQL with ease
 
 ![logo](./logo.png)
