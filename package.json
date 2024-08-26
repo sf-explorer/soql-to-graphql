@@ -1,11 +1,11 @@
 {
   "name": "@sf-explorer/soql-to-graphql",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Transform your SOQL queries into GraphQL",
   "main": "./main.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nicolas-despres/soql-to-graphql.git"
+    "url": "git+https://github.com/sf-explorer/soql-to-graphql.git"
   },
   "keywords": [
     "soql",
@@ -15,9 +15,9 @@
   "author": "ndespres@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nicolas-despres/soql-to-graphql/issues"
+    "url": "https://github.com/sf-explorer/soql-to-graphql/issues"
   },
-  "homepage": "https://github.com/nicolas-despres/soql-to-graphql#readme",
+  "homepage": "https://github.com/sf-explorer/soql-to-graphql#readme",
   "devDependencies": {
     "@types/jest": "~29.5",
     "@types/node": "~18",
