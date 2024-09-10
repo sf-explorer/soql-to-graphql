@@ -68,6 +68,12 @@ OFFSET 3
     expect(converter(subWhere)).toMatchSnapshot()
   })
 
+  const WhereBoolean = "Select IsClosed from Case where IsClosed=true"
+  it('Where boolean: ' + WhereBoolean, () => {
+
+    expect(converter(WhereBoolean)).toMatchSnapshot()
+  })
+  
   
 
 })

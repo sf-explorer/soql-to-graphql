@@ -38,8 +38,9 @@ function getWhereField(cond: ValueCondition, input?: TInput) {
     }
 
     let value: any;
-
-    if (cond.literalType === 'INTEGER' && typeof cond.value === 'string') {
+    if (cond.literalType === 'BOOLEAN' && typeof cond.value === 'string') {
+        value =  cond.value === 'TRUE'
+    } else if (cond.literalType === 'INTEGER' && typeof cond.value === 'string') {
         value = parseInt(cond.value)
     } else if (Array.isArray(cond.value)) {
         value = cond.value.map(item => JSON.stringify(item).replaceAll('"', "").replaceAll("'", ""))

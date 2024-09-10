@@ -115,6 +115,24 @@ exports[`converter function Sub where Query: select Id FROM OrderItem WHERE Orde
 }"
 `;
 
+exports[`converter function Where boolean: Select IsClosed from Case where IsClosed=true 1`] = `
+"query {
+    uiapi {
+        query {
+            Case (where: {IsClosed: {eq: true}}) {
+                edges {
+                    node {
+                        IsClosed {
+                            value
+                        }
+                    }
+                }
+            }
+        }
+    }
+}"
+`;
+
 exports[`converter function in Query: select Id, Name, Owner.Name from Account where Id in ('0030700000ywKMfAAM') limit 3 1`] = `
 "query {
     uiapi {
