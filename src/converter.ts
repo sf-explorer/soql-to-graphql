@@ -30,16 +30,16 @@ export function getWhereOperator(cond: ValueCondition): string {
 
 function getWhereField(cond: ValueCondition, input?: TInput) {
 
-    if(cond.field.includes('.')) {
+    if (cond.field.includes('.')) {
         const [outer, ...rest] = cond.field.split('.');
         return {
-            [outer]: {...getWhereField({...cond, field: rest.join('.')}, input)}
+            [outer]: { ...getWhereField({ ...cond, field: rest.join('.') }, input) }
         };
     }
 
     let value: any;
     if (cond.literalType === 'BOOLEAN' && typeof cond.value === 'string') {
-        value =  cond.value === 'TRUE'
+        value = cond.value === 'TRUE'
     } else if (cond.literalType === 'INTEGER' && typeof cond.value === 'string') {
         value = parseInt(cond.value)
     } else if (Array.isArray(cond.value)) {
@@ -139,11 +139,17 @@ function getQueryNode(parsedQuery: QueryBase): object {
 
 function getQuery(parsedQuery: QueryBase, input?: TInput): object {
 
+    const pageInfo = parsedQuery.limit ? {pageInfo: {
+        endCursor: true,
+        hasNextPage: true,
+        hasPreviousPage: true,
+    }} : {}
     return {
         __args: getArgs(parsedQuery, input),
         edges: {
             node: getQueryNode(parsedQuery)
-        }
+        }, ...pageInfo
+
     }
 }
 

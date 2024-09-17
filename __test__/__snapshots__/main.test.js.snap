@@ -43,6 +43,11 @@ exports[`converter function Advanced conversion test 1`] = `
                         }
                     }
                 }
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                    hasPreviousPage
+                }
             }
         }
     }
@@ -61,6 +66,11 @@ exports[`converter function Query with var select Id, Name from Account where (I
                             value
                         }
                     }
+                }
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                    hasPreviousPage
                 }
             }
         }
@@ -93,6 +103,11 @@ exports[`converter function Simple Query: select Id, Name, Owner.Name, (select I
                         }
                     }
                 }
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                    hasPreviousPage
+                }
             }
         }
     }
@@ -108,6 +123,11 @@ exports[`converter function Sub where Query: select Id FROM OrderItem WHERE Orde
                     node {
                         Id
                     }
+                }
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                    hasPreviousPage
                 }
             }
         }
@@ -150,6 +170,11 @@ exports[`converter function in Query: select Id, Name, Owner.Name from Account w
                             }
                         }
                     }
+                }
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                    hasPreviousPage
                 }
             }
         }
