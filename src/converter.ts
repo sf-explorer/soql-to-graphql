@@ -10,7 +10,7 @@ export function getWhereOperator(cond: ValueCondition): string {
         case '=':
             return 'eq'
         case '!=':
-            return 'neq'
+            return 'ne'
         case 'like':
             return 'like'
         case 'in':
