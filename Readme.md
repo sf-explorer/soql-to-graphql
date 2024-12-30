@@ -8,7 +8,7 @@
 
 Having challenges with GraphQL syntax? Already an SOQL ninja 🥷🏿? `soql-to-graphql` is for you.
 
-Check out the [Playground](https://sf-explorer.github.io/documentation/docs/Query/GraphQL/#playground)
+Check out the [Playground](https://sf-explorer.github.io/documentation/docs/Explore/GraphQL/#playground)
 
 ## Installation
 
