@@ -17,3 +17,6 @@ node_modules/
 
 # Test files (JavaScript, not TypeScript)
 __test__/
+
+# Script files (JavaScript, not TypeScript)
+scripts/

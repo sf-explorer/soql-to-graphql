@@ -52,7 +52,7 @@
     "prebuild": "npm run lint",
     "build": "rollup -c",
     "build:watch": "rollup -c -w",
-    "build:release": "npm run clean && npm run build && cp Readme.md ./dist && cp logo.png ./dist",
+    "build:release": "npm run clean && npm run build && cp Readme.md ./dist && cp logo.png ./dist && cp LICENSE ./dist && npm run prepare:publish",
     "lint": "eslint . --ext .ts --ext .mts",
     "lint:fix": "eslint . --ext .ts --ext .mts --fix",
     "test": "jest --coverage",
@@ -70,7 +70,10 @@
     "version:minor": "npm version minor",
     "version:major": "npm version major",
     "prepublishOnly": "npm run ci && npm run build:release",
-    "publish:npm": "npm publish --access public"
+    "publish:npm": "npm run prepare:publish && cd dist && npm publish --access public",
+    "prepare:publish": "node scripts/prepare-publish.js",
+    "publish:simple": "node scripts/publish-simple.js",
+    "restore:package": "git checkout package.json"
   },
   "dependencies": {
     "@jetstreamapp/soql-parser-js": "^6.1.0",
