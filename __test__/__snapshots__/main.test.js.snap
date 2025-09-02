@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`converter function Advanced conversion test 1`] = `
+exports[`Main Converter Integration Tests Basic SOQL Conversions should convert advanced real estate query with multiple conditions 1`] = `
 "query ($searchPattern: String ="%", $safeMaxPrice: Currency = 10000, $safeMinBedrooms: Double = 3, $cursorSize: Double = 3, $safeMinBathrooms: Double = 2) {
     uiapi {
         query {
@@ -54,7 +54,7 @@ exports[`converter function Advanced conversion test 1`] = `
 }"
 `;
 
-exports[`converter function Query with var select Id, Name from Account where (Id = :recordId and Name like :name) or BillingCountry like :country limit 3 1`] = `
+exports[`Main Converter Integration Tests Basic SOQL Conversions should convert query with variables and complex WHERE clause 1`] = `
 "query ($recordId: ID!, $name: String = "%", $country: String) {
     uiapi {
         query {
@@ -78,7 +78,7 @@ exports[`converter function Query with var select Id, Name from Account where (I
 }"
 `;
 
-exports[`converter function Simple Query: select Id, Name, Owner.Name, (select Id from Opportunities) from Account where Name like '%N' limit 3 1`] = `
+exports[`Main Converter Integration Tests Basic SOQL Conversions should convert simple query with relationships and subqueries 1`] = `
 "query {
     uiapi {
         query {
@@ -114,14 +114,22 @@ exports[`converter function Simple Query: select Id, Name, Owner.Name, (select I
 }"
 `;
 
-exports[`converter function Sub where Query: select Id FROM OrderItem WHERE Order.AccountId = :accountId limit 3 1`] = `
+exports[`Main Converter Integration Tests Special Query Types should convert IN clause queries 1`] = `
 "query {
     uiapi {
         query {
-            OrderItem (first: 3, where: {Order: {AccountId: {eq: "accountId"}}}) {
+            Account (first: 3, where: {Id: {in: ["0030700000ywKMfAAM"]}}) {
                 edges {
                     node {
                         Id
+                        Name {
+                            value
+                        }
+                        Owner {
+                            Name {
+                                value
+                            }
+                        }
                     }
                 }
                 pageInfo {
@@ -135,7 +143,7 @@ exports[`converter function Sub where Query: select Id FROM OrderItem WHERE Orde
 }"
 `;
 
-exports[`converter function Where boolean: Select IsClosed from Case where IsClosed=true 1`] = `
+exports[`Main Converter Integration Tests Special Query Types should convert boolean WHERE conditions 1`] = `
 "query {
     uiapi {
         query {
@@ -153,22 +161,14 @@ exports[`converter function Where boolean: Select IsClosed from Case where IsClo
 }"
 `;
 
-exports[`converter function in Query: select Id, Name, Owner.Name from Account where Id in ('0030700000ywKMfAAM') limit 3 1`] = `
+exports[`Main Converter Integration Tests Special Query Types should convert subquery WHERE conditions 1`] = `
 "query {
     uiapi {
         query {
-            Account (first: 3, where: {Id: {in: ["0030700000ywKMfAAM"]}}) {
+            OrderItem (first: 3, where: {Order: {AccountId: {eq: "accountId"}}}) {
                 edges {
                     node {
                         Id
-                        Name {
-                            value
-                        }
-                        Owner {
-                            Name {
-                                value
-                            }
-                        }
                     }
                 }
                 pageInfo {
