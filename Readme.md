@@ -4,7 +4,7 @@
 [![CI](https://github.com/sf-explorer/soql-to-graphql/workflows/CI/badge.svg)](https://github.com/sf-explorer/soql-to-graphql/actions/workflows/ci.yml)
 [![Test Coverage](https://codecov.io/gh/sf-explorer/soql-to-graphql/branch/main/graph/badge.svg)](https://codecov.io/gh/sf-explorer/soql-to-graphql)
 [![Security Audit](https://github.com/sf-explorer/soql-to-graphql/workflows/Security%20Audit/badge.svg)](https://github.com/sf-explorer/soql-to-graphql/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Downloads](https://img.shields.io/npm/dm/@sf-explorer/soql-to-graphql.svg)](https://www.npmjs.com/package/@sf-explorer/soql-to-graphql)
 
 > 🚀 **Transform your SOQL queries into GraphQL with zero learning curve**
@@ -580,7 +580,34 @@ Our GitHub Actions workflow ensures code quality:
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the **MIT License** - a permissive open-source license that allows you to:
+
+### ✅ **What You Can Do**
+
+- **Use commercially** - Use in commercial projects and products
+- **Modify** - Change the code to fit your needs
+- **Distribute** - Share the code with others
+- **Sublicense** - Include in your own projects with different licenses
+- **Private use** - Use in private projects without restrictions
+
+### 📋 **License Requirements**
+
+- **Include the license** - Keep the MIT license text in your distribution
+- **Include copyright** - Maintain the copyright notice
+- **No warranty** - The software is provided "as is" without warranty
+
+### 🔗 **Full License Text**
+
+See the complete [LICENSE](LICENSE) file for the full legal text.
+
+### 💡 **Why MIT?**
+
+The MIT License was chosen because it:
+
+- **Maximizes adoption** - Easy for businesses to use
+- **Minimal restrictions** - Simple and permissive
+- **Industry standard** - Widely recognized and trusted
+- **Developer friendly** - Clear and easy to understand
 
 ## 🤝 Support
 
