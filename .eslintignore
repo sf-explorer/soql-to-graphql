@@ -1,0 +1,15 @@
+# Build output
+build/
+coverage/
+tmp/
+
+# Config files
+jest.config.js
+*.config.js
+
+# Dependencies
+node_modules/
+
+# Generated files
+*.d.ts
+*.js.map
