@@ -14,10 +14,10 @@ describe('QueryConverter Module', () => {
           field: 'Name',
           operator: '=',
           value: 'Test',
-          literalType: 'STRING'
-        }
+          literalType: 'STRING',
+        },
       };
-      
+
       const result = getArgs(parsedQuery);
       expect(result.where).toBeDefined();
       expect(result.where.Name).toBeDefined();
@@ -27,46 +27,48 @@ describe('QueryConverter Module', () => {
       const parsedQuery = {
         orderBy: {
           field: 'Name',
-          order: 'ASC'
-        }
+          order: 'ASC',
+        },
       };
-      
+
       const result = getArgs(parsedQuery);
       expect(result).toEqual({
         orderBy: {
-          Name: { order: 'ASC' }
-        }
+          Name: { order: 'ASC' },
+        },
       });
     });
 
     it('should convert query with orderBy (array)', () => {
       const parsedQuery = {
-        orderBy: [{
-          field: 'Name',
-          order: 'DESC'
-        }]
+        orderBy: [
+          {
+            field: 'Name',
+            order: 'DESC',
+          },
+        ],
       };
-      
+
       const result = getArgs(parsedQuery);
       expect(result).toEqual({
         orderBy: {
-          Name: { order: 'DESC' }
-        }
+          Name: { order: 'DESC' },
+        },
       });
     });
 
     it('should use default order when not specified', () => {
       const parsedQuery = {
         orderBy: {
-          field: 'Name'
-        }
+          field: 'Name',
+        },
       };
-      
+
       const result = getArgs(parsedQuery);
       expect(result).toEqual({
         orderBy: {
-          Name: { order: 'ASC' }
-        }
+          Name: { order: 'ASC' },
+        },
       });
     });
 
@@ -74,15 +76,15 @@ describe('QueryConverter Module', () => {
       const parsedQuery = {
         orderBy: {
           functionName: 'COUNT',
-          order: 'DESC'
-        }
+          order: 'DESC',
+        },
       };
-      
+
       const result = getArgs(parsedQuery);
       expect(result).toEqual({
         orderBy: {
-          COUNT: { order: 'DESC' }
-        }
+          COUNT: { order: 'DESC' },
+        },
       });
     });
 
@@ -90,15 +92,15 @@ describe('QueryConverter Module', () => {
       const parsedQuery = {
         orderBy: {
           orderByField: 'CreatedDate',
-          order: 'ASC'
-        }
+          order: 'ASC',
+        },
       };
-      
+
       const result = getArgs(parsedQuery);
       expect(result).toEqual({
         orderBy: {
-          CreatedDate: { order: 'ASC' }
-        }
+          CreatedDate: { order: 'ASC' },
+        },
       });
     });
 
@@ -106,15 +108,15 @@ describe('QueryConverter Module', () => {
       const parsedQuery = {
         orderBy: {
           unknown: 'value',
-          order: 'ASC'
-        }
+          order: 'ASC',
+        },
       };
-      
+
       const result = getArgs(parsedQuery);
       expect(result).toEqual({
         orderBy: {
-          unknown: { order: 'ASC' }
-        }
+          unknown: { order: 'ASC' },
+        },
       });
     });
 
@@ -125,14 +127,14 @@ describe('QueryConverter Module', () => {
           field: 'Status',
           operator: '=',
           value: 'Active',
-          literalType: 'STRING'
+          literalType: 'STRING',
         },
         orderBy: {
           field: 'Name',
-          order: 'ASC'
-        }
+          order: 'ASC',
+        },
       };
-      
+
       const result = getArgs(parsedQuery);
       expect(result.first).toBe(5);
       expect(result.where).toBeDefined();
@@ -143,35 +145,35 @@ describe('QueryConverter Module', () => {
   describe('getQuery', () => {
     it('should create query without pageInfo when no limit', () => {
       const parsedQuery = {
-        fields: [{ field: 'Id' }]
+        fields: [{ field: 'Id' }],
       };
-      
+
       const result = getQuery(parsedQuery);
       expect(result).toEqual({
         __args: {},
         edges: {
-          node: { Id: true }
-        }
+          node: { Id: true },
+        },
       });
     });
 
     it('should create query with pageInfo when limit is present', () => {
       const parsedQuery = {
         limit: 10,
-        fields: [{ field: 'Id' }]
+        fields: [{ field: 'Id' }],
       };
-      
+
       const result = getQuery(parsedQuery);
       expect(result).toEqual({
         __args: { first: 10 },
         edges: {
-          node: { Id: true }
+          node: { Id: true },
         },
         pageInfo: {
           endCursor: true,
           hasNextPage: true,
-          hasPreviousPage: true
-        }
+          hasPreviousPage: true,
+        },
       });
     });
 
@@ -182,10 +184,10 @@ describe('QueryConverter Module', () => {
           field: 'Name',
           operator: '=',
           value: ':name',
-          literalType: 'APEX_BIND_VARIABLE'
-        }
+          literalType: 'APEX_BIND_VARIABLE',
+        },
       };
-      
+
       const input = { name: 'String' };
       const result = getQuery(parsedQuery, input);
       expect(result.__args.where).toBeDefined();

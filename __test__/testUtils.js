@@ -13,7 +13,7 @@ function createMockCondition(overrides = {}) {
     operator: '=',
     value: 'Test',
     literalType: 'STRING',
-    ...overrides
+    ...overrides,
   };
 }
 
@@ -25,7 +25,7 @@ function createMockCondition(overrides = {}) {
 function createMockField(overrides = {}) {
   return {
     field: 'Name',
-    ...overrides
+    ...overrides,
   };
 }
 
@@ -37,11 +37,8 @@ function createMockField(overrides = {}) {
 function createMockQuery(overrides = {}) {
   return {
     sObject: 'Account',
-    fields: [
-      { field: 'Id' },
-      { field: 'Name' }
-    ],
-    ...overrides
+    fields: [{ field: 'Id' }, { field: 'Name' }],
+    ...overrides,
   };
 }
 
@@ -53,30 +50,30 @@ function createMockQuery(overrides = {}) {
 function validateGraphQLStructure(result, expected = {}) {
   expect(result).toContain('query');
   expect(result).toContain('uiapi');
-  
+
   if (expected.sObject) {
     expect(result).toContain(expected.sObject);
   }
-  
+
   if (expected.fields) {
     expected.fields.forEach(field => {
       expect(result).toContain(field);
     });
   }
-  
+
   if (expected.hasWhere) {
     expect(result).toContain('where');
   }
-  
+
   if (expected.hasLimit) {
     expect(result).toContain('first');
     expect(result).toContain('pageInfo');
   }
-  
+
   if (expected.hasOrderBy) {
     expect(result).toContain('orderBy');
   }
-  
+
   if (expected.hasVariables) {
     // Variables are now in the GraphQL query parameters, not __variables
     expect(result).toMatch(/\$[a-zA-Z_][a-zA-Z0-9_]*:/);
@@ -90,32 +87,32 @@ const testData = {
   simpleQueries: [
     'SELECT Id FROM Account',
     'SELECT Id, Name FROM Contact',
-    'SELECT Id, Name, Email FROM Lead'
+    'SELECT Id, Name, Email FROM Lead',
   ],
-  
+
   queriesWithWhere: [
     "SELECT Id FROM Account WHERE Name = 'Test'",
     "SELECT Id FROM Contact WHERE Email = 'test@example.com'",
-    "SELECT Id FROM Lead WHERE Status = 'New'"
+    "SELECT Id FROM Lead WHERE Status = 'New'",
   ],
-  
+
   queriesWithLimit: [
     'SELECT Id FROM Account LIMIT 10',
     'SELECT Id FROM Contact LIMIT 100',
-    'SELECT Id FROM Lead LIMIT 1'
+    'SELECT Id FROM Lead LIMIT 1',
   ],
-  
+
   queriesWithOrderBy: [
     'SELECT Id FROM Account ORDER BY Name ASC',
     'SELECT Id FROM Contact ORDER BY CreatedDate DESC',
-    'SELECT Id FROM Lead ORDER BY Name ASC, Email DESC'
+    'SELECT Id FROM Lead ORDER BY Name ASC, Email DESC',
   ],
-  
+
   complexQueries: [
     "SELECT Id, Name, Owner.Name FROM Account WHERE Industry = 'Technology' LIMIT 50",
     "SELECT Id, (SELECT Id FROM Opportunities) FROM Account WHERE Name LIKE '%Test%'",
-    'SELECT COUNT(Id) FROM Contact WHERE IsActive = true'
-  ]
+    'SELECT COUNT(Id) FROM Contact WHERE IsActive = true',
+  ],
 };
 
 /**
@@ -132,14 +129,14 @@ const performanceUtils = {
     const start = process.hrtime.bigint();
     const result = fn(...args);
     const end = process.hrtime.bigint();
-    
+
     return {
       result,
       executionTime: Number(end - start) / 1000000, // Convert to milliseconds
-      memoryUsage: process.memoryUsage()
+      memoryUsage: process.memoryUsage(),
     };
   },
-  
+
   /**
    * Runs a function multiple times and returns average metrics
    * @param {Function} fn - Function to benchmark
@@ -150,20 +147,21 @@ const performanceUtils = {
   benchmark(fn, args = [], iterations = 100) {
     const times = [];
     const memoryUsages = [];
-    
+
     for (let i = 0; i < iterations; i++) {
       const metrics = this.measureExecutionTime(fn, args);
       times.push(metrics.executionTime);
       memoryUsages.push(metrics.memoryUsage.heapUsed);
     }
-    
+
     return {
       averageTime: times.reduce((a, b) => a + b, 0) / times.length,
       minTime: Math.min(...times),
       maxTime: Math.max(...times),
-      averageMemory: memoryUsages.reduce((a, b) => a + b, 0) / memoryUsages.length
+      averageMemory:
+        memoryUsages.reduce((a, b) => a + b, 0) / memoryUsages.length,
     };
-  }
+  },
 };
 
 module.exports = {
@@ -172,5 +170,5 @@ module.exports = {
   createMockQuery,
   validateGraphQLStructure,
   testData,
-  performanceUtils
+  performanceUtils,
 };

@@ -5,7 +5,7 @@ describe('Integration Tests', () => {
     it('should convert simple SELECT query', () => {
       const soql = 'SELECT Id, Name FROM Account';
       const result = converter(soql);
-      
+
       expect(result).toContain('query');
       expect(result).toContain('uiapi');
       expect(result).toContain('Account');
@@ -16,7 +16,7 @@ describe('Integration Tests', () => {
     it('should convert query with WHERE clause', () => {
       const soql = "SELECT Id FROM Account WHERE Name = 'Test'";
       const result = converter(soql);
-      
+
       expect(result).toContain('where');
       expect(result).toContain('eq');
     });
@@ -24,7 +24,7 @@ describe('Integration Tests', () => {
     it('should convert query with LIMIT', () => {
       const soql = 'SELECT Id FROM Account LIMIT 10';
       const result = converter(soql);
-      
+
       expect(result).toContain('first');
       expect(result).toContain('pageInfo');
     });
@@ -32,7 +32,7 @@ describe('Integration Tests', () => {
     it('should convert query with ORDER BY', () => {
       const soql = 'SELECT Id FROM Account ORDER BY Name ASC';
       const result = converter(soql);
-      
+
       expect(result).toContain('orderBy');
     });
   });
@@ -41,28 +41,28 @@ describe('Integration Tests', () => {
     it('should handle relationship fields', () => {
       const soql = 'SELECT Id, Owner.Name FROM Account';
       const result = converter(soql);
-      
+
       expect(result).toContain('Owner');
     });
 
     it('should handle subqueries', () => {
       const soql = 'SELECT Id, (SELECT Id FROM Opportunities) FROM Account';
       const result = converter(soql);
-      
+
       expect(result).toContain('Opportunities');
     });
 
     it('should handle function calls', () => {
       const soql = 'SELECT COUNT(Id) FROM Account';
       const result = converter(soql);
-      
+
       expect(result).toContain('label');
     });
 
     it('should handle toLabel function', () => {
       const soql = 'SELECT toLabel(Status) FROM Case';
       const result = converter(soql);
-      
+
       expect(result).toContain('label');
     });
   });
@@ -72,7 +72,7 @@ describe('Integration Tests', () => {
       const soql = 'SELECT Id FROM Account WHERE Name = :name';
       const variables = { name: 'String' };
       const result = converter(soql, variables);
-      
+
       expect(result).toMatch(/\$[a-zA-Z_][a-zA-Z0-9_]*:/);
     });
 
@@ -80,15 +80,16 @@ describe('Integration Tests', () => {
       const soql = 'SELECT Id FROM Account WHERE Name = :name AND Age > :age';
       const variables = { name: 'String', age: 'Integer' };
       const result = converter(soql, variables);
-      
+
       expect(result).toMatch(/\$[a-zA-Z_][a-zA-Z0-9_]*:/);
     });
 
     it('should handle variables in subqueries', () => {
-      const soql = 'SELECT Id, (SELECT Id FROM Opportunities WHERE Amount > :minAmount) FROM Account';
+      const soql =
+        'SELECT Id, (SELECT Id FROM Opportunities WHERE Amount > :minAmount) FROM Account';
       const variables = { minAmount: 'Currency' };
       const result = converter(soql, variables);
-      
+
       expect(result).toMatch(/\$[a-zA-Z_][a-zA-Z0-9_]*:/);
     });
   });
@@ -97,28 +98,29 @@ describe('Integration Tests', () => {
     it('should handle boolean values', () => {
       const soql = 'SELECT IsActive FROM Account WHERE IsActive = true';
       const result = converter(soql);
-      
+
       expect(result).toContain('eq');
     });
 
     it('should handle integer values', () => {
       const soql = 'SELECT Age FROM Account WHERE Age > 25';
       const result = converter(soql);
-      
+
       expect(result).toContain('gt');
     });
 
     it('should handle string values with quotes', () => {
       const soql = "SELECT Name FROM Account WHERE Name = 'Test Company'";
       const result = converter(soql);
-      
+
       expect(result).toContain('eq');
     });
 
     it('should handle IN clause with multiple values', () => {
-      const soql = "SELECT Id FROM Account WHERE Status IN ('Active', 'Pending')";
+      const soql =
+        "SELECT Id FROM Account WHERE Status IN ('Active', 'Pending')";
       const result = converter(soql);
-      
+
       expect(result).toContain('in');
     });
   });
@@ -127,21 +129,23 @@ describe('Integration Tests', () => {
     it('should handle AND operator', () => {
       const soql = "SELECT Id FROM Account WHERE Name = 'Test' AND Age > 25";
       const result = converter(soql);
-      
+
       expect(result).toContain('and');
     });
 
     it('should handle OR operator', () => {
-      const soql = "SELECT Id FROM Account WHERE Name = 'Test' OR Name = 'Demo'";
+      const soql =
+        "SELECT Id FROM Account WHERE Name = 'Test' OR Name = 'Demo'";
       const result = converter(soql);
-      
+
       expect(result).toContain('or');
     });
 
     it('should handle complex logical combinations', () => {
-      const soql = "SELECT Id FROM Account WHERE (Name = 'Test' OR Name = 'Demo') AND Age > 25";
+      const soql =
+        "SELECT Id FROM Account WHERE (Name = 'Test' OR Name = 'Demo') AND Age > 25";
       const result = converter(soql);
-      
+
       expect(result).toContain('and');
       expect(result).toContain('or');
     });
@@ -159,7 +163,7 @@ describe('Integration Tests', () => {
       `;
       const variables = { accountId: 'ID!' };
       const result = converter(soql, variables);
-      
+
       expect(result).toContain('Contact');
       expect(result).toContain('Owner');
       expect(result).toMatch(/\$[a-zA-Z_][a-zA-Z0-9_]*:/);
@@ -173,12 +177,12 @@ describe('Integration Tests', () => {
         AND CloseDate >= :startDate
         AND CloseDate <= :endDate
       `;
-      const variables = { 
-        startDate: 'Date', 
-        endDate: 'Date' 
+      const variables = {
+        startDate: 'Date',
+        endDate: 'Date',
       };
       const result = converter(soql, variables);
-      
+
       expect(result).toContain('Opportunity');
       expect(result).toMatch(/\$[a-zA-Z_][a-zA-Z0-9_]*:/);
     });
@@ -194,7 +198,7 @@ describe('Integration Tests', () => {
       `;
       const variables = { industry: 'String' };
       const result = converter(soql, variables);
-      
+
       expect(result).toContain('Opportunities');
       expect(result).toContain('Cases');
       expect(result).toMatch(/\$[a-zA-Z_][a-zA-Z0-9_]*:/);

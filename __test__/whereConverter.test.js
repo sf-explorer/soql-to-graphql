@@ -1,4 +1,7 @@
-const { getWhereField, getWhereCond } = require('../build/src/whereConverter.js');
+const {
+  getWhereField,
+  getWhereCond,
+} = require('../build/src/whereConverter.js');
 
 describe('WhereConverter Module', () => {
   describe('getWhereField', () => {
@@ -7,12 +10,12 @@ describe('WhereConverter Module', () => {
         field: 'Name',
         operator: '=',
         value: 'Test',
-        literalType: 'STRING'
+        literalType: 'STRING',
       };
-      
+
       const result = getWhereField(condition);
       expect(result).toEqual({
-        Name: { eq: 'Test' }
+        Name: { eq: 'Test' },
       });
     });
 
@@ -21,12 +24,12 @@ describe('WhereConverter Module', () => {
         field: 'IsActive',
         operator: '=',
         value: 'TRUE',
-        literalType: 'BOOLEAN'
+        literalType: 'BOOLEAN',
       };
-      
+
       const result = getWhereField(condition);
       expect(result).toEqual({
-        IsActive: { eq: true }
+        IsActive: { eq: true },
       });
     });
 
@@ -35,12 +38,12 @@ describe('WhereConverter Module', () => {
         field: 'Age',
         operator: '>',
         value: '25',
-        literalType: 'INTEGER'
+        literalType: 'INTEGER',
       };
-      
+
       const result = getWhereField(condition);
       expect(result).toEqual({
-        Age: { gt: 25 }
+        Age: { gt: 25 },
       });
     });
 
@@ -49,12 +52,12 @@ describe('WhereConverter Module', () => {
         field: 'Status',
         operator: 'in',
         value: ['Active', 'Pending'],
-        literalType: 'STRING'
+        literalType: 'STRING',
       };
-      
+
       const result = getWhereField(condition);
       expect(result).toEqual({
-        Status: { in: ['Active', 'Pending'] }
+        Status: { in: ['Active', 'Pending'] },
       });
     });
 
@@ -63,14 +66,14 @@ describe('WhereConverter Module', () => {
         field: 'Owner.Name',
         operator: '=',
         value: 'John Doe',
-        literalType: 'STRING'
+        literalType: 'STRING',
       };
-      
+
       const result = getWhereField(condition);
       expect(result).toEqual({
         Owner: {
-          Name: { eq: 'John Doe' }
-        }
+          Name: { eq: 'John Doe' },
+        },
       });
     });
 
@@ -79,19 +82,23 @@ describe('WhereConverter Module', () => {
         field: 'Id',
         operator: '=',
         value: ':recordId',
-        literalType: 'APEX_BIND_VARIABLE'
+        literalType: 'APEX_BIND_VARIABLE',
       };
-      
+
       const input = { recordId: 'String' };
       const result = getWhereField(condition, input);
-      
+
       expect(result.Id.eq).toBeDefined();
       expect(result.Id.eq.constructor.name).toBe('VariableType');
     });
 
     it('should throw error for invalid condition', () => {
-      expect(() => getWhereField(null)).toThrow('Invalid condition: field is required');
-      expect(() => getWhereField({})).toThrow('Invalid condition: field is required');
+      expect(() => getWhereField(null)).toThrow(
+        'Invalid condition: field is required'
+      );
+      expect(() => getWhereField({})).toThrow(
+        'Invalid condition: field is required'
+      );
     });
   });
 
@@ -101,12 +108,12 @@ describe('WhereConverter Module', () => {
         field: 'Name',
         operator: '=',
         value: 'Test',
-        literalType: 'STRING'
+        literalType: 'STRING',
       };
-      
+
       const result = getWhereCond(condition);
       expect(result).toEqual({
-        Name: { eq: 'Test' }
+        Name: { eq: 'Test' },
       });
     });
 
@@ -117,22 +124,19 @@ describe('WhereConverter Module', () => {
           field: 'Name',
           operator: '=',
           value: 'Test',
-          literalType: 'STRING'
+          literalType: 'STRING',
         },
         right: {
           field: 'Age',
           operator: '>',
           value: '25',
-          literalType: 'INTEGER'
-        }
+          literalType: 'INTEGER',
+        },
       };
-      
+
       const result = getWhereCond(condition);
       expect(result).toEqual({
-        and: [
-          { Name: { eq: 'Test' } },
-          { Age: { gt: 25 } }
-        ]
+        and: [{ Name: { eq: 'Test' } }, { Age: { gt: 25 } }],
       });
     });
 
@@ -143,27 +147,26 @@ describe('WhereConverter Module', () => {
           field: 'Status',
           operator: '=',
           value: 'Active',
-          literalType: 'STRING'
+          literalType: 'STRING',
         },
         right: {
           field: 'Status',
           operator: '=',
           value: 'Pending',
-          literalType: 'STRING'
-        }
+          literalType: 'STRING',
+        },
       };
-      
+
       const result = getWhereCond(condition);
       expect(result).toEqual({
-        or: [
-          { Status: { eq: 'Active' } },
-          { Status: { eq: 'Pending' } }
-        ]
+        or: [{ Status: { eq: 'Active' } }, { Status: { eq: 'Pending' } }],
       });
     });
 
     it('should throw error for invalid condition', () => {
-      expect(() => getWhereCond(null)).toThrow('Invalid condition: condition is required');
+      expect(() => getWhereCond(null)).toThrow(
+        'Invalid condition: condition is required'
+      );
     });
   });
 });

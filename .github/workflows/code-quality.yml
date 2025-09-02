@@ -2,42 +2,42 @@ name: Code Quality
 
 on:
   pull_request:
-    branches: [ main, develop, 'dev/**' ]
+    branches: [main, develop, 'dev/**']
   push:
-    branches: [ main, develop, 'dev/**' ]
+    branches: [main, develop, 'dev/**']
 
 jobs:
   code-quality:
     name: Code Quality Checks
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20.x'
-        cache: 'npm'
-        
-    - name: Install dependencies
-      run: npm ci
-      
-    - name: Run ESLint
-      run: npm run lint
-      
-    - name: Check code formatting
-      run: npx prettier --check "src/**/*.{ts,js}" "**/*.{md,json}"
-      
-    - name: TypeScript type checking
-      run: npx tsc --noEmit
-      
-    - name: Build verification
-      run: npm run build
-      
-    - name: Test build output
-      run: |
-        node -e "console.log('Build verification successful')"
-        test -f build/src/main.js
-        test -f build/src/converter.js
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Check code formatting
+        run: npx prettier --check "src/**/*.{ts,js}" "**/*.{md,json}"
+
+      - name: TypeScript type checking
+        run: npx tsc --noEmit
+
+      - name: Build verification
+        run: npm run build
+
+      - name: Test build output
+        run: |
+          node -e "console.log('Build verification successful')"
+          test -f build/src/main.js
+          test -f build/src/converter.js

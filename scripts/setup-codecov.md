@@ -36,6 +36,7 @@ The following files are already configured:
 ## 5. Coverage targets
 
 The current configuration targets:
+
 - **Project coverage**: 90% (threshold: 1%)
 - **Patch coverage**: 80% (threshold: 1%)
 - **Current coverage**: 98.19% ✅
@@ -43,6 +44,7 @@ The current configuration targets:
 ## 6. Coverage reports
 
 Your coverage reports will show:
+
 - Overall project coverage
 - File-by-file coverage
 - Line-by-line coverage details
@@ -52,6 +54,7 @@ Your coverage reports will show:
 ## Troubleshooting
 
 If the Codecov badge shows "unknown":
+
 1. Ensure the repository is enabled on Codecov
 2. Check that the GitHub Actions workflow is running
 3. Verify the `CODECOV_TOKEN` secret is set (if using private repos)
