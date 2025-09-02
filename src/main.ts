@@ -1,4 +1,5 @@
-import transform, { TInput } from './converter';
+import transform from './converter';
+import { TInput } from './types';
 import { parseQuery } from '@jetstreamapp/soql-parser-js';
 import { jsonToGraphQLQuery } from 'json-to-graphql-query';
 
