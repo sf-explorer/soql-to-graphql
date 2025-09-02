@@ -33,5 +33,5 @@ export default function transform(
 }
 
 // Re-export types and functions for backward compatibility
-export { TInput } from './types';
+export type { TInput } from './types';
 export { getWhereOperator } from './operators';
