@@ -63,6 +63,7 @@ jobs:
               NEW_VERSION=$(npm version $VERSION --dry-run | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
               echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
               echo "tag=v$NEW_VERSION" >> $GITHUB_OUTPUT
+              echo "current_version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
             else
               echo "version=$VERSION" >> $GITHUB_OUTPUT
               echo "tag=v$VERSION" >> $GITHUB_OUTPUT
@@ -112,28 +113,39 @@ jobs:
           cat CHANGELOG.md >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
-      - name: Create Git tag
+      - name: Create Git tag and commit changes
         if: github.event_name == 'workflow_dispatch'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add package.json CHANGELOG.md
-          git commit -m "chore: release v${{ steps.get_version.outputs.version }}"
+          git commit -m "chore: release v${{ steps.get_version.outputs.version }}" || echo "No changes to commit"
           git tag -a "v${{ steps.get_version.outputs.version }}" -m "Release v${{ steps.get_version.outputs.version }}"
+          git push origin main
           git push origin "v${{ steps.get_version.outputs.version }}"
+
+      - name: Verify NPM token
+        run: |
+          if [[ -z "${{ secrets.NPM_TOKEN }}" ]]; then
+            echo "❌ NPM_TOKEN secret is not set"
+            echo "Please add NPM_TOKEN to your repository secrets"
+            exit 1
+          fi
+          echo "✅ NPM_TOKEN is configured"
 
       - name: Publish to NPM
         run: |
           echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          cd build/src
+          echo "📦 Publishing to NPM..."
           npm publish --access public
+          echo "✅ Successfully published to NPM"
 
       - name: Create GitHub Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.get_version.outputs.tag }}
-          release_name: Release ${{ steps.get_version.outputs.tag }}
+          name: Release ${{ steps.get_version.outputs.tag }}
           body: |
             ## What's Changed
 
@@ -154,16 +166,19 @@ jobs:
             **Full Changelog**: https://github.com/sf-explorer/soql-to-graphql/compare/${{ steps.get_version.outputs.tag }}...${{ steps.get_version.outputs.tag }}
           draft: false
           prerelease: ${{ github.event.inputs.prerelease == 'true' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update README badges
         run: |
-          # Update version badge in README
-          sed -i "s/version.*badge\.fury\.io.*soql-to-graphql.*svg.*badge\.fury\.io.*soql-to-graphql.*svg/version](https:\/\/badge\.fury\.io\/js\/%40sf-explorer%2Fsoql-to-graphql\.svg)](https:\/\/badge\.fury\.io\/js\/%40sf-explorer%2Fsoql-to-graphql)/" Readme.md
-
-      - name: Commit README updates
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add Readme.md
-          git commit -m "docs: update README badges for v${{ steps.get_version.outputs.version }}" || exit 0
-          git push origin main || exit 0
+          # Update version badge in README if it exists
+          if grep -q "badge\.fury\.io" Readme.md; then
+            sed -i "s|badge\.fury\.io/js/.*soql-to-graphql|badge.fury.io/js/@sf-explorer%2Fsoql-to-graphql|g" Readme.md
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add Readme.md
+            git commit -m "docs: update README badges for v${{ steps.get_version.outputs.version }}" || echo "No badge changes to commit"
+            git push origin main || echo "No changes to push"
+          else
+            echo "No version badge found in README"
+          fi
