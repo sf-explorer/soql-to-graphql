@@ -32,7 +32,7 @@ jobs:
         run: npm run lint
 
       - name: Build project
-        run: npm run build
+        run: npm run build:release
 
       - name: Run tests
         run: npm run test:ci
@@ -90,7 +90,7 @@ jobs:
         run: npm ci
 
       - name: Build project
-        run: npm run build
+        run: npm run build:release
 
       - name: Verify build artifacts
         run: |
