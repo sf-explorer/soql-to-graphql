@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/@sf-explorer%2Fsoql-to-graphql.svg)](https://badge.fury.io/js/@sf-explorer%2Fsoql-to-graphql)
 [![CI](https://github.com/sf-explorer/soql-to-graphql/workflows/CI/badge.svg)](https://github.com/sf-explorer/soql-to-graphql/actions/workflows/ci.yml)
 [![Test Coverage](https://codecov.io/gh/sf-explorer/soql-to-graphql/branch/main/graph/badge.svg)](https://codecov.io/gh/sf-explorer/soql-to-graphql)
-[![Security Audit](https://github.com/sf-explorer/soql-to-graphql/workflows/Security%20Audit/badge.svg)](https://github.com/sf-explorer/soql-to-graphql/actions/workflows/ci.yml)
+[![Security Audit](https://github.com/sf-explorer/soql-to-graphql/workflows/Security%20Audit/badge.svg)](re)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Downloads](https://img.shields.io/npm/dm/@sf-explorer/soql-to-graphql.svg)](https://www.npmjs.com/package/@sf-explorer/soql-to-graphql)
 
@@ -514,6 +514,15 @@ The project includes comprehensive testing with **96%+ coverage**:
 - **TypeScript**: Type safety and IntelliSense
 - **Husky**: Git hooks for quality gates
 - **Jest**: Comprehensive testing framework
+
+### Git Hooks
+
+This project uses Git hooks to ensure code quality:
+
+- **Pre-commit**: Automatically formats and lints staged files
+- **Pre-push**: Verifies all files are properly formatted before push
+
+See [Git Hooks Documentation](docs/git-hooks.md) for detailed information.
 
 ### Contributing Guidelines
 
