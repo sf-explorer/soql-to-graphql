@@ -115,8 +115,6 @@ const testData = {
   ],
 };
 
-
-
 module.exports = {
   createMockCondition,
   createMockField,

@@ -24,7 +24,6 @@ Brief description of the changes made in this PR.
 - [ ] New tests added for new functionality
 - [ ] Manual testing completed
 
-
 ## Checklist
 
 - [ ] Code follows the project's coding standards
