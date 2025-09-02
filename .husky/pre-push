@@ -1,0 +1,10 @@
+echo "🔍 Running Prettier before push..."
+npm run prettier:check
+
+if [ $? -ne 0 ]; then
+  echo "❌ Code formatting issues found!"
+  echo "💡 Run 'npm run prettier' to fix formatting issues"
+  exit 1
+fi
+
+echo "✅ Code formatting is correct!"
