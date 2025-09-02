@@ -572,11 +572,28 @@ Our GitHub Actions workflow ensures code quality:
 
 ### Release Process
 
-1. **Version Bump**: Update version in `package.json`
-2. **Changelog**: Update `CHANGELOG.md` with new features
-3. **Tag Release**: Create a git tag (e.g., `v1.0.0`)
-4. **Automated Build**: GitHub Actions builds and publishes
-5. **NPM Publishing**: Package automatically published to NPM
+We use automated releases with GitHub Actions:
+
+1. **Trigger Release**: Use GitHub Actions workflow or create a git tag
+2. **Automated Testing**: All tests run automatically
+3. **Version Update**: Version number incremented automatically
+4. **NPM Publishing**: Package published to NPM automatically
+5. **GitHub Release**: Release notes and changelog generated
+
+**Quick Release Commands:**
+
+```bash
+# Patch release (bug fixes)
+npm run version:patch
+
+# Minor release (new features)
+npm run version:minor
+
+# Major release (breaking changes)
+npm run version:major
+```
+
+See [Release Guide](docs/release-guide.md) for detailed instructions.
 
 ## 📄 License
 
