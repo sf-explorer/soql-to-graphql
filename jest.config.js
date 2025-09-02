@@ -5,9 +5,7 @@ const config = {
   transform: {
     '^.+\\.m?[tj]s?$': ['ts-jest'],
   },
-  moduleNameMapper: {
-    '^(\\.{1,2}/.*)\\.(m)?js$': '$1',
-  },
+  moduleNameMapper: {},
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(m)?js$',
   coverageDirectory: 'coverage',
   collectCoverageFrom: [
