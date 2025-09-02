@@ -14,6 +14,7 @@
 **Are you a Salesforce developer struggling with GraphQL syntax?** Already an SOQL ninja 🥷🏿? This library is your bridge between the familiar SOQL world and the powerful GraphQL ecosystem.
 
 **Perfect for:**
+
 - Salesforce developers migrating to GraphQL
 - Teams building modern APIs with Salesforce data
 - Developers who want to leverage GraphQL without learning new syntax
@@ -35,7 +36,7 @@
 ## ✨ Features
 
 - 🔄 **Seamless Conversion**: Convert any SOQL query to GraphQL instantly
-- 🎯 **Type Safety**: Full TypeScript support with comprehensive type 
+- 🎯 **Type Safety**: Full TypeScript support with comprehensive type
 - 🧪 **Battle Tested**: Comprehensive test suite with 104+ test cases
 - 🔧 **Developer Friendly**: Excellent error messages and debugging support
 - 📚 **Well Documented**: Extensive documentation and examples
@@ -50,26 +51,31 @@
 ## 📦 Installation
 
 ### npm
+
 ```bash
 npm install @sf-explorer/soql-to-graphql
 ```
 
 ### yarn
+
 ```bash
 yarn add @sf-explorer/soql-to-graphql
 ```
 
 ### pnpm
+
 ```bash
 pnpm add @sf-explorer/soql-to-graphql
 ```
 
 ### CDN (Browser)
+
 ```html
 <script src="https://unpkg.com/@sf-explorer/soql-to-graphql@latest/dist/index.js"></script>
 ```
 
 ### Requirements
+
 - Node.js 18.x or higher
 - TypeScript 5.x (optional, for type definitions)
 
@@ -88,6 +94,7 @@ console.log(graphql);
 ```
 
 **Output:**
+
 ```graphql
 query {
   uiapi {
@@ -123,14 +130,15 @@ const graphql = soql2graphql(soql);
 ```
 
 **Output:**
+
 ```graphql
 query {
   uiapi {
     query {
       Account(
         first: 10
-        where: {Industry: {eq: "Technology"}}
-        orderBy: {Name: {order: ASC}}
+        where: { Industry: { eq: "Technology" } }
+        orderBy: { Name: { order: ASC } }
       ) {
         edges {
           node {
@@ -143,7 +151,7 @@ query {
                 value
               }
             }
-            Opportunities(where: {StageName: {eq: "Closed Won"}}) {
+            Opportunities(where: { StageName: { eq: "Closed Won" } }) {
               edges {
                 node {
                   Id
@@ -177,20 +185,26 @@ const soql = `
 
 const variables = {
   accountId: 'ID!',
-  isActive: 'Boolean'
+  isActive: 'Boolean',
 };
 
 const graphql = soql2graphql(soql, variables);
 ```
 
 **Output:**
+
 ```graphql
 query ($accountId: ID!, $isActive: Boolean) {
   uiapi {
     query {
       Contact(
-        where: {and: [{AccountId: {eq: $accountId}}, {IsActive: {eq: $isActive}}]}
-        orderBy: {Name: {order: ASC}}
+        where: {
+          and: [
+            { AccountId: { eq: $accountId } }
+            { IsActive: { eq: $isActive } }
+          ]
+        }
+        orderBy: { Name: { order: ASC } }
       ) {
         edges {
           node {
@@ -225,17 +239,30 @@ const graphql = soql2graphql(soql);
 ```
 
 **Output:**
+
 ```graphql
 query {
   uiapi {
     query {
       Opportunity(
         first: 20
-        where: {or: [
-          {and: [{Amount: {gt: 10000}}, {StageName: {eq: "Closed Won"}}]},
-          {and: [{Amount: {gt: 5000}}, {StageName: {eq: "Prospecting"}}]}
-        ]}
-        orderBy: {Amount: {order: DESC}}
+        where: {
+          or: [
+            {
+              and: [
+                { Amount: { gt: 10000 } }
+                { StageName: { eq: "Closed Won" } }
+              ]
+            }
+            {
+              and: [
+                { Amount: { gt: 5000 } }
+                { StageName: { eq: "Prospecting" } }
+              ]
+            }
+          ]
+        }
+        orderBy: { Amount: { order: DESC } }
       ) {
         edges {
           node {
@@ -289,27 +316,35 @@ interface TInput {
   [prop: string]: string;
 }
 
-type ComparisonOperator = 'eq' | 'ne' | 'like' | 'in' | 'gt' | 'gte' | 'lt' | 'lte';
+type ComparisonOperator =
+  | 'eq'
+  | 'ne'
+  | 'like'
+  | 'in'
+  | 'gt'
+  | 'gte'
+  | 'lt'
+  | 'lte';
 type LogicalOperator = 'and' | 'or';
 type OrderDirection = 'ASC' | 'DESC';
 ```
 
 ### Supported SOQL Features
 
-| Feature | Status | Example |
-|---------|--------|---------|
-| Basic SELECT | ✅ | `SELECT Id, Name FROM Account` |
-| WHERE clauses | ✅ | `WHERE Name = 'Test'` |
-| ORDER BY | ✅ | `ORDER BY Name ASC` |
-| LIMIT | ✅ | `LIMIT 10` |
-| Relationships | ✅ | `SELECT Owner.Name FROM Account` |
-| Subqueries | ✅ | `SELECT Id, (SELECT Id FROM Opportunities) FROM Account` |
-| Variable binding | ✅ | `WHERE Name = :name` |
-| Logical operators | ✅ | `WHERE A = 1 AND B = 2` |
-| Comparison operators | ✅ | `WHERE Amount > 1000` |
-| IN clauses | ✅ | `WHERE Id IN ('001', '002')` |
-| LIKE patterns | ✅ | `WHERE Name LIKE '%Test%'` |
-| Functions | ✅ | `SELECT COUNT(Id) FROM Account` |
+| Feature              | Status | Example                                                  |
+| -------------------- | ------ | -------------------------------------------------------- |
+| Basic SELECT         | ✅     | `SELECT Id, Name FROM Account`                           |
+| WHERE clauses        | ✅     | `WHERE Name = 'Test'`                                    |
+| ORDER BY             | ✅     | `ORDER BY Name ASC`                                      |
+| LIMIT                | ✅     | `LIMIT 10`                                               |
+| Relationships        | ✅     | `SELECT Owner.Name FROM Account`                         |
+| Subqueries           | ✅     | `SELECT Id, (SELECT Id FROM Opportunities) FROM Account` |
+| Variable binding     | ✅     | `WHERE Name = :name`                                     |
+| Logical operators    | ✅     | `WHERE A = 1 AND B = 2`                                  |
+| Comparison operators | ✅     | `WHERE Amount > 1000`                                    |
+| IN clauses           | ✅     | `WHERE Id IN ('001', '002')`                             |
+| LIKE patterns        | ✅     | `WHERE Name LIKE '%Test%'`                               |
+| Functions            | ✅     | `SELECT COUNT(Id) FROM Account`                          |
 
 ## 🔧 Configuration
 
@@ -355,6 +390,7 @@ try {
 ### Common Issues
 
 #### "Invalid SOQL query" Error
+
 ```javascript
 // ❌ Incorrect
 const soql = 'SELECT Id FROM'; // Missing table name
@@ -364,6 +400,7 @@ const soql = 'SELECT Id FROM Account';
 ```
 
 #### Variable Binding Issues
+
 ```javascript
 // ❌ Incorrect
 const soql = 'SELECT Id FROM Account WHERE Name = :name';
@@ -375,6 +412,7 @@ const variables = { name: 'String' }; // Include type
 ```
 
 #### Complex WHERE Conditions
+
 ```javascript
 // ❌ Incorrect - Missing parentheses
 const soql = 'SELECT Id FROM Account WHERE A = 1 AND B = 2 OR C = 3';
@@ -418,11 +456,13 @@ A: Currently, you need to convert each query individually, but you can batch the
 ## 🛠️ Development
 
 ### Prerequisites
+
 - Node.js 18.x or higher
 - npm 8.x or higher
 - Git
 
 ### Quick Setup
+
 ```bash
 # Clone the repository
 git clone https://github.com/sf-explorer/soql-to-graphql.git
@@ -440,18 +480,18 @@ npm run test:watch
 
 ### Available Scripts
 
-| Script | Description |
-|--------|-------------|
-| `npm run build` | Build the project for production |
+| Script                | Description                         |
+| --------------------- | ----------------------------------- |
+| `npm run build`       | Build the project for production    |
 | `npm run build:watch` | Build in watch mode for development |
-| `npm run test` | Run the complete test suite |
-| `npm run test:watch` | Run tests in watch mode |
-| `npm run test:ci` | Run tests for CI environment |
-| `npm run lint` | Run ESLint code quality checks |
-| `npm run lint:fix` | Fix ESLint issues automatically |
-| `npm run prettier` | Format code with Prettier |
-| `npm run type-check` | Run TypeScript type checking |
-| `npm run ci` | Run complete CI pipeline locally |
+| `npm run test`        | Run the complete test suite         |
+| `npm run test:watch`  | Run tests in watch mode             |
+| `npm run test:ci`     | Run tests for CI environment        |
+| `npm run lint`        | Run ESLint code quality checks      |
+| `npm run lint:fix`    | Fix ESLint issues automatically     |
+| `npm run prettier`    | Format code with Prettier           |
+| `npm run type-check`  | Run TypeScript type checking        |
+| `npm run ci`          | Run complete CI pipeline locally    |
 
 ### Project Structure
 
@@ -496,28 +536,33 @@ The project includes comprehensive testing with **96%+ coverage**:
 We welcome contributions! Here's how to get started:
 
 #### 1. Fork and Clone
+
 ```bash
 git clone https://github.com/YOUR_USERNAME/soql-to-graphql.git
 cd soql-to-graphql
 ```
 
 #### 2. Create a Feature Branch
+
 ```bash
 git checkout -b feature/your-feature-name
 ```
 
 #### 3. Make Your Changes
+
 - Write clean, well-documented code
 - Add tests for new functionality
 - Update documentation as needed
 - Follow the existing code style
 
 #### 4. Test Your Changes
+
 ```bash
 npm run ci  # Run complete CI pipeline
 ```
 
 #### 5. Submit a Pull Request
+
 - Provide a clear description of your changes
 - Reference any related issues
 - Ensure all CI checks pass
@@ -554,6 +599,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🙏 Credits
 
 This utility would be nothing without these powerful libraries:
+
 - [SOQL Parser JS](https://github.com/jetstreamapp/soql-parser-js) - SOQL parsing engine
 - [JSON to GraphQL](https://www.npmjs.com/package/json-to-graphql-query) - GraphQL query generation
 

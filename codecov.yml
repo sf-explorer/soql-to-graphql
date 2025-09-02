@@ -4,7 +4,7 @@ codecov:
 coverage:
   precision: 2
   round: down
-  range: "70...100"
+  range: '70...100'
 
   status:
     project:
@@ -17,7 +17,7 @@ coverage:
         threshold: 1%
 
 comment:
-  layout: "header,diff,files,footer"
+  layout: 'header,diff,files,footer'
   behavior: default
   require_changes: false
   require_base: no
@@ -27,15 +27,15 @@ github_checks:
   annotations: true
 
 ignore:
-  - "node_modules/**"
-  - "build/**"
-  - "coverage/**"
-  - "__test__/**"
-  - "*.test.js"
-  - "*.test.ts"
-  - "jest.config.js"
-  - "tsconfig*.json"
-  - ".github/**"
-  - ".prettierrc"
-  - ".prettierignore"
-  - "audit-ci.json"
+  - 'node_modules/**'
+  - 'build/**'
+  - 'coverage/**'
+  - '__test__/**'
+  - '*.test.js'
+  - '*.test.ts'
+  - 'jest.config.js'
+  - 'tsconfig*.json'
+  - '.github/**'
+  - '.prettierrc'
+  - '.prettierignore'
+  - 'audit-ci.json'

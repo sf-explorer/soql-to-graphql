@@ -7,5 +7,5 @@ import { OPERATOR_MAPPING, DEFAULT_OPERATOR } from './constants';
  * @returns The corresponding GraphQL operator
  */
 export function getWhereOperator(cond: ValueCondition): ComparisonOperator {
-    return OPERATOR_MAPPING[cond.operator.toLowerCase()] || DEFAULT_OPERATOR;
+  return OPERATOR_MAPPING[cond.operator.toLowerCase()] || DEFAULT_OPERATOR;
 }

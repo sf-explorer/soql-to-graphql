@@ -18,18 +18,18 @@ describe('FieldConverter Module', () => {
       const field = {
         type: 'FieldRelationship',
         field: 'Owner',
-        relationships: ['Name']
+        relationships: ['Name'],
       };
       const result = getField(field);
       expect(result).toEqual({
-        Owner: { value: true }
+        Owner: { value: true },
       });
     });
 
     it('should handle toLabel function', () => {
       const field = {
         functionName: 'toLabel',
-        parameters: ['Status']
+        parameters: ['Status'],
       };
       const result = getField(field);
       expect(result).toEqual({ label: true });
@@ -38,7 +38,7 @@ describe('FieldConverter Module', () => {
     it('should handle other functions', () => {
       const field = {
         functionName: 'COUNT',
-        parameters: ['Id']
+        parameters: ['Id'],
       };
       const result = getField(field);
       expect(result).toEqual({ label: true });
@@ -49,17 +49,20 @@ describe('FieldConverter Module', () => {
         type: 'FieldSubquery',
         subquery: {
           relationshipName: 'Opportunities',
-          fields: [{ field: 'Id' }]
-        }
+          fields: [{ field: 'Id' }],
+        },
       };
-      
+
       // Mock the getQuery function to avoid circular dependency
-      const originalGetQuery = require('../build/src/queryConverter.js').getQuery;
-      require('../build/src/queryConverter.js').getQuery = jest.fn().mockReturnValue({ mock: 'subquery' });
-      
+      const originalGetQuery =
+        require('../build/src/queryConverter.js').getQuery;
+      require('../build/src/queryConverter.js').getQuery = jest
+        .fn()
+        .mockReturnValue({ mock: 'subquery' });
+
       const result = getField(field);
       expect(result).toEqual({ mock: 'subquery' });
-      
+
       // Restore original function
       require('../build/src/queryConverter.js').getQuery = originalGetQuery;
     });
@@ -72,7 +75,9 @@ describe('FieldConverter Module', () => {
 
     it('should throw error for invalid field', () => {
       expect(() => getField(null)).toThrow('Invalid field: field is required');
-      expect(() => getField(undefined)).toThrow('Invalid field: field is required');
+      expect(() => getField(undefined)).toThrow(
+        'Invalid field: field is required'
+      );
     });
   });
 
@@ -82,15 +87,15 @@ describe('FieldConverter Module', () => {
         fields: [
           { field: 'Id' },
           { field: 'Name' },
-          { relationships: ['Owner'], field: 'Name' }
-        ]
+          { relationships: ['Owner'], field: 'Name' },
+        ],
       };
-      
+
       const result = getQueryNode(parsedQuery);
       expect(result).toEqual({
         Id: true,
         Name: { value: true },
-        Owner: { value: true }
+        Owner: { value: true },
       });
     });
 
@@ -98,46 +103,46 @@ describe('FieldConverter Module', () => {
       const parsedQuery = {
         fields: [
           { relationships: ['Owner'], field: 'Name' },
-          { relationships: ['Account'], field: 'Name' }
-        ]
+          { relationships: ['Account'], field: 'Name' },
+        ],
       };
-      
+
       const result = getQueryNode(parsedQuery);
       expect(result).toEqual({
         Owner: { value: true },
-        Account: { value: true }
+        Account: { value: true },
       });
     });
 
     it('should handle fields with subqueries', () => {
       const parsedQuery = {
         fields: [
-          { 
+          {
             subquery: { relationshipName: 'Opportunities' },
-            field: 'Id'
-          }
-        ]
+            field: 'Id',
+          },
+        ],
       };
-      
+
       const result = getQueryNode(parsedQuery);
       expect(result).toEqual({
-        Id: true
+        Id: true,
       });
     });
 
     it('should handle fields with parameters', () => {
       const parsedQuery = {
         fields: [
-          { 
+          {
             functionName: 'toLabel',
-            parameters: ['Status']
-          }
-        ]
+            parameters: ['Status'],
+          },
+        ],
       };
-      
+
       const result = getQueryNode(parsedQuery);
       expect(result).toEqual({
-        Status: { label: true }
+        Status: { label: true },
       });
     });
 

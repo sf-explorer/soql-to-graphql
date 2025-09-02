@@ -7,7 +7,9 @@ describe('Error Handling', () => {
     });
 
     it('should throw error for undefined query', () => {
-      expect(() => converter(undefined)).toThrow('SOQL query string is required');
+      expect(() => converter(undefined)).toThrow(
+        'SOQL query string is required'
+      );
     });
 
     it('should throw error for empty string query', () => {
@@ -57,7 +59,8 @@ describe('Error Handling', () => {
     });
 
     it('should handle very long field names', () => {
-      const longFieldName = 'Very_Long_Custom_Field_Name_That_Exceeds_Normal_Length__c';
+      const longFieldName =
+        'Very_Long_Custom_Field_Name_That_Exceeds_Normal_Length__c';
       const result = converter(`SELECT ${longFieldName} FROM Account`);
       expect(result).toBeDefined();
     });
@@ -85,19 +88,22 @@ describe('Error Handling', () => {
 
   describe('Complex Query Edge Cases', () => {
     it('should handle deeply nested WHERE conditions', () => {
-      const query = "SELECT Id FROM Account WHERE (Name = 'Test' AND (Age > 25 OR Status = 'Active'))";
+      const query =
+        "SELECT Id FROM Account WHERE (Name = 'Test' AND (Age > 25 OR Status = 'Active'))";
       const result = converter(query);
       expect(result).toBeDefined();
     });
 
     it('should handle multiple ORDER BY clauses', () => {
-      const query = 'SELECT Id, Name FROM Account ORDER BY Name ASC, CreatedDate DESC';
+      const query =
+        'SELECT Id, Name FROM Account ORDER BY Name ASC, CreatedDate DESC';
       const result = converter(query);
       expect(result).toBeDefined();
     });
 
     it('should handle subqueries with complex WHERE clauses', () => {
-      const query = 'SELECT Id, (SELECT Id FROM Opportunities WHERE Amount > 1000) FROM Account';
+      const query =
+        'SELECT Id, (SELECT Id FROM Opportunities WHERE Amount > 1000) FROM Account';
       const result = converter(query);
       expect(result).toBeDefined();
     });
