@@ -1,4 +1,4 @@
-const { getWhereField, getWhereCond } = require('../dist/index.js');
+const { getWhereField, getWhereCond } = require('../dist/index.cjs');
 
 describe('WhereConverter Module', () => {
   describe('getWhereField', () => {

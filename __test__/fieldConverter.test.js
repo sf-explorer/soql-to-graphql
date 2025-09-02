@@ -1,4 +1,4 @@
-const { getField, getQueryNode } = require('../dist/index.js');
+const { getField, getQueryNode } = require('../dist/index.cjs');
 
 describe('FieldConverter Module', () => {
   describe('getField', () => {

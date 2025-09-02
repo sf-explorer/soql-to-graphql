@@ -1,4 +1,4 @@
-const { getArgs, getQuery } = require('../dist/index.js');
+const { getArgs, getQuery } = require('../dist/index.cjs');
 
 describe('QueryConverter Module', () => {
   describe('getArgs', () => {

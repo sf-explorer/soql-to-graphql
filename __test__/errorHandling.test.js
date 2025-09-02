@@ -1,4 +1,4 @@
-const converter = require('../dist/index.js').soql2graphql;
+const converter = require('../dist/index.cjs').soql2graphql;
 
 describe('Error Handling', () => {
   describe('Input Validation', () => {
