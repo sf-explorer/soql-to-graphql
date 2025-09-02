@@ -13,7 +13,7 @@ export type ComparisonOperator =
 export type LogicalOperator = 'and' | 'or';
 export type OrderDirection = 'ASC' | 'DESC';
 
-export interface TInput {
+export interface VariableDefinitions {
   [prop: string]: string;
 }
 
