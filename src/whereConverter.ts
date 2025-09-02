@@ -1,5 +1,5 @@
 import { VariableType } from 'json-to-graphql-query';
-import { ValueCondition, TInput } from './types';
+import { ValueCondition, VariableDefinitions } from './types';
 import { LITERAL_TYPES } from './constants';
 import { getWhereOperator } from './operators';
 
@@ -12,7 +12,7 @@ import { getWhereOperator } from './operators';
  */
 export function getWhereField(
   cond: ValueCondition,
-  input?: TInput
+  input?: VariableDefinitions
 ): Record<string, unknown> {
   if (!cond || !cond.field) {
     throw new Error('Invalid condition: field is required');
@@ -66,7 +66,7 @@ export function getWhereField(
  */
 export function getWhereCond(
   cond: unknown,
-  input?: TInput
+  input?: VariableDefinitions
 ): Record<string, unknown> {
   if (!cond) {
     throw new Error('Invalid condition: condition is required');

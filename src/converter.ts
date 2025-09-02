@@ -1,4 +1,4 @@
-import { Query, TInput } from './types';
+import { Query, VariableDefinitions } from './types';
 import { getQuery } from './queryConverter';
 
 /**
@@ -10,7 +10,7 @@ import { getQuery } from './queryConverter';
  */
 export default function transform(
   parsedQuery: Query,
-  input?: TInput
+  input?: VariableDefinitions
 ): Record<string, unknown> {
   if (!parsedQuery) {
     throw new Error('Parsed query is required');
@@ -33,5 +33,5 @@ export default function transform(
 }
 
 // Re-export types and functions for backward compatibility
-export type { TInput } from './types';
+export type { VariableDefinitions } from './types';
 export { getWhereOperator } from './operators';

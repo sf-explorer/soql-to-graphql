@@ -286,14 +286,14 @@ query {
 
 ## 📚 API Documentation
 
-### `soql2graphql(soql: string, variables?: TInput): string`
+### `soql2graphql(soql: string, variables?: VariableDefinitions): string`
 
 Converts a SOQL query string to GraphQL format.
 
 #### Parameters
 
 - **`soql`** (string, required): The SOQL query to convert
-- **`variables`** (TInput, optional): Variable definitions for bind variables
+- **`variables`** (VariableDefinitions, optional): Variable definitions for bind variables
 
 #### Returns
 
@@ -302,17 +302,19 @@ Converts a SOQL query string to GraphQL format.
 #### Example
 
 ```typescript
-import soql2graphql, { TInput } from '@sf-explorer/soql-to-graphql';
+import soql2graphql, {
+  VariableDefinitions,
+} from '@sf-explorer/soql-to-graphql';
 
 const soql = 'SELECT Id FROM Account WHERE Name = :name';
-const variables: TInput = { name: 'String' };
+const variables: VariableDefinitions = { name: 'String' };
 const graphql = soql2graphql(soql, variables);
 ```
 
 ### Type Definitions
 
 ```typescript
-interface TInput {
+interface VariableDefinitions {
   [prop: string]: string;
 }
 

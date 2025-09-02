@@ -1,4 +1,4 @@
-import { Query, QueryBase, TInput } from './types';
+import { Query, QueryBase, VariableDefinitions } from './types';
 import { DEFAULT_ORDER } from './constants';
 import { getWhereCond } from './whereConverter';
 import { getQueryNode } from './fieldConverter';
@@ -11,7 +11,7 @@ import { getQueryNode } from './fieldConverter';
  */
 export function getArgs(
   parsedQuery: Query,
-  input?: TInput
+  input?: VariableDefinitions
 ): Record<string, unknown> {
   const res: Record<string, unknown> = {};
 
@@ -59,7 +59,7 @@ export function getArgs(
  */
 export function getQuery(
   parsedQuery: QueryBase,
-  input?: TInput
+  input?: VariableDefinitions
 ): Record<string, unknown> {
   const pageInfo = parsedQuery.limit
     ? {
