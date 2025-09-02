@@ -28,7 +28,7 @@
 - [🚀 Usage](#-usage)
 - [📚 API Documentation](#-api-documentation)
 - [🔧 Configuration](#-configuration)
-- [🚀 Performance](#-performance)
+
 - [🛠️ Troubleshooting](#️-troubleshooting)
 - [🛠️ Development](#️-development)
 - [Credits](#credits)
@@ -369,21 +369,7 @@ try {
 }
 ```
 
-## 🚀 Performance
 
-### Benchmarks
-
-- **Simple queries**: ~1-5ms conversion time
-- **Complex queries**: ~5-20ms conversion time
-- **Memory usage**: <10MB for typical workloads
-- **Bundle size**: ~50KB minified + gzipped
-
-### Optimization Tips
-
-1. **Cache converted queries** when possible
-2. **Use variables** for dynamic queries
-3. **Minimize subquery depth** for better performance
-4. **Batch multiple queries** when converting in bulk
 
 ## 🛠️ Troubleshooting
 
@@ -451,7 +437,7 @@ A: We support the most common SOQL features. Check the [supported features table
 A: Custom fields work the same as standard fields. Just use the API name: `SELECT Custom_Field__c FROM Account`.
 
 **Q: Can I convert multiple queries at once?**
-A: Currently, you need to convert each query individually, but you can batch the calls for better performance.
+A: Currently, you need to convert each query individually, but you can batch the calls for efficiency.
 
 ## 🛠️ Development
 
@@ -509,7 +495,7 @@ src/
 __test__/
 ├── unit/              # Unit tests for individual modules
 ├── integration/       # End-to-end integration tests
-├── performance/       # Performance and stress tests
+
 └── fixtures/          # Test data and fixtures
 ```
 
@@ -519,7 +505,7 @@ The project includes comprehensive testing with **96%+ coverage**:
 
 - **🧪 Unit Tests**: Individual module testing
 - **🔗 Integration Tests**: End-to-end functionality
-- **⚡ Performance Tests**: Speed and memory optimization
+
 - **🛡️ Error Handling**: Edge cases and error scenarios
 - **📊 Coverage Reports**: Detailed coverage analysis
 
