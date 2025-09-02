@@ -26,7 +26,9 @@
     "eslint": "~8.46.0",
     "eslint-config-prettier": "~9.0.0",
     "eslint-plugin-jest": "~27.2.3",
+    "husky": "^9.1.7",
     "jest": "~29.6.4",
+    "lint-staged": "^16.1.6",
     "prettier": "~3.0.3",
     "rimraf": "~5.0.10",
     "ts-api-utils": "~1.0.3",
@@ -50,12 +52,21 @@
     "type-check": "tsc --noEmit",
     "ci": "npm run type-check && npm run lint && npm run test:ci && npm run build",
     "audit": "npm audit --audit-level=moderate",
-    "audit:fix": "npm audit fix"
+    "audit:fix": "npm audit fix",
+    "prepare": "husky"
   },
   "dependencies": {
     "@jetstreamapp/soql-parser-js": "^6.1.0",
+    "braces": ">=3.0.3",
     "json-to-graphql-query": "^2.3.0",
-    "tslib": "~2.6.3",
-    "braces": ">=3.0.3"
+    "tslib": "~2.6.3"
+  },
+  "lint-staged": {
+    "*.{ts,js,json,md,yml,yaml}": [
+      "prettier --write"
+    ],
+    "*.{ts,js}": [
+      "eslint --fix"
+    ]
   }
 }
