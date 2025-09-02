@@ -10,7 +10,13 @@ const config = {
   },
   testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(m)?js$',
   coverageDirectory: 'coverage',
-  collectCoverageFrom: ['build/**/*.js', 'src/**/*.ts', '!src/**/*.d.ts'],
+  collectCoverageFrom: [
+    'build/**/*.js',
+    '!build/**/*.d.ts',
+    '!build/**/*.js.map',
+    '!build/**/*.test.js',
+    '!build/**/*.spec.js',
+  ],
 };
 
 module.exports = config;
