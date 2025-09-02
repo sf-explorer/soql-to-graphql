@@ -36,14 +36,21 @@
   "scripts": {
     "start": "node build/src/main.js",
     "clean": "rimraf coverage build tmp",
-    "prebuild_": "npm run lint",
+    "prebuild": "npm run lint",
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -w -p tsconfig.json",
     "build:release": "npm run clean && tsc -p tsconfig.release.json && cp Readme.md ./build/src && cp logo.png ./build/src && cp package.json ./build/src",
     "lint": "eslint . --ext .ts --ext .mts",
+    "lint:fix": "eslint . --ext .ts --ext .mts --fix",
     "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "test:ci": "jest --coverage --watchAll=false",
     "prettier": "prettier --config .prettierrc --write .",
-    "test:watch": "jest --watch"
+    "prettier:check": "prettier --check .",
+    "type-check": "tsc --noEmit",
+    "ci": "npm run type-check && npm run lint && npm run test:ci && npm run build",
+    "audit": "npm audit --audit-level=moderate",
+    "audit:fix": "npm audit fix"
   },
   "dependencies": {
     "@jetstreamapp/soql-parser-js": "^6.1.0",
