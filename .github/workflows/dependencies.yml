@@ -35,7 +35,7 @@ jobs:
         run: npm outdated || true
 
       - name: Run tests with updated dependencies
-        run: npm test
+        run: npm run test:ci
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
