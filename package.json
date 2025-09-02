@@ -1,6 +1,6 @@
 {
   "name": "@sf-explorer/soql-to-graphql",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Transform your SOQL queries into GraphQL",
   "main": "./main.js",
   "repository": {
@@ -53,7 +53,12 @@
     "ci": "npm run type-check && npm run lint && npm run test:ci && npm run build",
     "audit": "npm audit --audit-level=moderate",
     "audit:fix": "npm audit fix",
-    "prepare": "husky"
+    "prepare": "husky",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
+    "prepublishOnly": "npm run ci && npm run build:release",
+    "publish:npm": "npm publish --access public"
   },
   "dependencies": {
     "@jetstreamapp/soql-parser-js": "^6.1.0",

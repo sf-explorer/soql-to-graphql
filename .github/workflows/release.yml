@@ -9,18 +9,33 @@ on:
       version:
         description: 'Version to release (e.g., 1.0.0)'
         required: true
-        type: string
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      prerelease:
+        description: 'Create a prerelease'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -33,7 +48,7 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm test
+        run: npm run test:ci
 
       - name: Build project
         run: npm run build:release
@@ -41,56 +56,114 @@ jobs:
       - name: Extract version from tag
         id: get_version
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "version=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION="${{ github.event.inputs.version }}"
+            if [[ "$VERSION" == "patch" || "$VERSION" == "minor" || "$VERSION" == "major" ]]; then
+              CURRENT_VERSION=$(node -p "require('./package.json').version")
+              NEW_VERSION=$(npm version $VERSION --dry-run | grep -o '[0-9]\+\.[0-9]\+\.[0-9]\+')
+              echo "version=$NEW_VERSION" >> $GITHUB_OUTPUT
+              echo "tag=v$NEW_VERSION" >> $GITHUB_OUTPUT
+            else
+              echo "version=$VERSION" >> $GITHUB_OUTPUT
+              echo "tag=v$VERSION" >> $GITHUB_OUTPUT
+            fi
           else
-            echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+            VERSION=${GITHUB_REF#refs/tags/v}
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+            echo "tag=v$VERSION" >> $GITHUB_OUTPUT
           fi
 
       - name: Update package.json version
+        if: github.event_name == 'workflow_dispatch'
         run: |
-          npm version ${{ steps.get_version.outputs.version }} --no-git-tag-version
+          if [[ "${{ github.event.inputs.version }}" == "patch" || "${{ github.event.inputs.version }}" == "minor" || "${{ github.event.inputs.version }}" == "major" ]]; then
+            npm version ${{ github.event.inputs.version }} --no-git-tag-version
+          else
+            npm version ${{ github.event.inputs.version }} --no-git-tag-version
+          fi
 
       - name: Generate changelog
+        id: changelog
         run: |
-          echo "## Changes in ${{ steps.get_version.outputs.version }}" > CHANGELOG.md
-          echo "" >> CHANGELOG.md
-          echo "### Features" >> CHANGELOG.md
-          echo "- Enhanced test coverage and CI/CD pipeline" >> CHANGELOG.md
-          echo "- Improved code modularity and type safety" >> CHANGELOG.md
-          echo "- Added comprehensive error handling" >> CHANGELOG.md
-          echo "" >> CHANGELOG.md
-          echo "### Bug Fixes" >> CHANGELOG.md
-          echo "- Fixed typo in main function name" >> CHANGELOG.md
-          echo "- Improved string processing efficiency" >> CHANGELOG.md
-          echo "" >> CHANGELOG.md
-          echo "### Technical Improvements" >> CHANGELOG.md
-          echo "- Refactored code into modular components" >> CHANGELOG.md
-          echo "- Added comprehensive test suite with 96%+ coverage" >> CHANGELOG.md
-          echo "- Implemented GitHub Actions CI/CD pipeline" >> CHANGELOG.md
+          # Get commits since last tag
+          if git describe --tags --abbrev=0 HEAD~1 >/dev/null 2>&1; then
+            LAST_TAG=$(git describe --tags --abbrev=0 HEAD~1)
+            COMMITS=$(git log --pretty=format:"- %s" $LAST_TAG..HEAD)
+          else
+            COMMITS=$(git log --pretty=format:"- %s" --max-count=20)
+          fi
+
+          # Create changelog
+          cat > CHANGELOG.md << EOF
+          # Changelog
+
+          All notable changes to this project will be documented in this file.
+
+          ## [${{ steps.get_version.outputs.version }}] - $(date +%Y-%m-%d)
+
+          ### Changes
+          $COMMITS
+
+          ### Full Changelog
+          https://github.com/sf-explorer/soql-to-graphql/compare/$LAST_TAG...v${{ steps.get_version.outputs.version }}
+          EOF
+
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          cat CHANGELOG.md >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Git tag
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add package.json CHANGELOG.md
+          git commit -m "chore: release v${{ steps.get_version.outputs.version }}"
+          git tag -a "v${{ steps.get_version.outputs.version }}" -m "Release v${{ steps.get_version.outputs.version }}"
+          git push origin "v${{ steps.get_version.outputs.version }}"
+
+      - name: Publish to NPM
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+          npm publish --access public
 
       - name: Create GitHub Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.get_version.outputs.version }}
-          release_name: Release ${{ steps.get_version.outputs.version }}
-          body_path: CHANGELOG.md
+          tag_name: ${{ steps.get_version.outputs.tag }}
+          release_name: Release ${{ steps.get_version.outputs.tag }}
+          body: |
+            ## What's Changed
+
+            ${{ steps.changelog.outputs.changelog }}
+
+            ## Installation
+
+            ```bash
+            npm install @sf-explorer/soql-to-graphql@${{ steps.get_version.outputs.version }}
+            ```
+
+            ## Documentation
+
+            - [Full Documentation](https://github.com/sf-explorer/soql-to-graphql#readme)
+            - [API Reference](https://github.com/sf-explorer/soql-to-graphql#-api-documentation)
+            - [Examples](https://github.com/sf-explorer/soql-to-graphql#-usage)
+
+            **Full Changelog**: https://github.com/sf-explorer/soql-to-graphql/compare/${{ steps.get_version.outputs.tag }}...${{ steps.get_version.outputs.tag }}
           draft: false
-          prerelease: false
+          prerelease: ${{ github.event.inputs.prerelease == 'true' }}
 
-      - name: Publish to NPM
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Update README badges
+        run: |
+          # Update version badge in README
+          sed -i "s/version.*badge\.fury\.io.*soql-to-graphql.*svg.*badge\.fury\.io.*soql-to-graphql.*svg/version](https:\/\/badge\.fury\.io\/js\/%40sf-explorer%2Fsoql-to-graphql\.svg)](https:\/\/badge\.fury\.io\/js\/%40sf-explorer%2Fsoql-to-graphql)/" Readme.md
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts-${{ steps.get_version.outputs.version }}
-          path: |
-            build/
-            package.json
-            README.md
-            CHANGELOG.md
+      - name: Commit README updates
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add Readme.md
+          git commit -m "docs: update README badges for v${{ steps.get_version.outputs.version }}" || exit 0
+          git push origin main || exit 0
