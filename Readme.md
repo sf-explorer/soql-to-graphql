@@ -3,7 +3,7 @@
 [![npm version](https://badge.fury.io/js/@sf-explorer%2Fsoql-to-graphql.svg)](https://badge.fury.io/js/@sf-explorer%2Fsoql-to-graphql)
 [![CI](https://github.com/sf-explorer/soql-to-graphql/workflows/CI/badge.svg)](https://github.com/sf-explorer/soql-to-graphql/actions/workflows/ci.yml)
 [![Test Coverage](https://codecov.io/gh/sf-explorer/soql-to-graphql/branch/main/graph/badge.svg)](https://codecov.io/gh/sf-explorer/soql-to-graphql)
-[![Security Audit](https://github.com/sf-explorer/soql-to-graphql/workflows/Security%20Audit/badge.svg)](re)
+[![Security Audit](https://github.com/sf-explorer/soql-to-graphql/workflows/Security%20Audit/badge.svg)](https://github.com/sf-explorer/soql-to-graphql/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Downloads](https://img.shields.io/npm/dm/@sf-explorer/soql-to-graphql.svg)](https://www.npmjs.com/package/@sf-explorer/soql-to-graphql)
 
