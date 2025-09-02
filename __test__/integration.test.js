@@ -1,4 +1,4 @@
-const converter = require('../build/src/main.js').default;
+const converter = require('../dist/index.js').soql2graphql;
 
 describe('Integration Tests', () => {
   describe('Basic SOQL to GraphQL Conversion', () => {

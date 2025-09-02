@@ -1,4 +1,4 @@
-const { getField, getQueryNode } = require('../build/src/fieldConverter.js');
+const { getField, getQueryNode } = require('../dist/index.js');
 
 describe('FieldConverter Module', () => {
   describe('getField', () => {
@@ -53,18 +53,15 @@ describe('FieldConverter Module', () => {
         },
       };
 
-      // Mock the getQuery function to avoid circular dependency
-      const originalGetQuery =
-        require('../build/src/queryConverter.js').getQuery;
-      require('../build/src/queryConverter.js').getQuery = jest
-        .fn()
-        .mockReturnValue({ mock: 'subquery' });
-
       const result = getField(field);
-      expect(result).toEqual({ mock: 'subquery' });
-
-      // Restore original function
-      require('../build/src/queryConverter.js').getQuery = originalGetQuery;
+      expect(result).toEqual({
+        __args: {},
+        edges: {
+          node: {
+            Id: true,
+          },
+        },
+      });
     });
 
     it('should return empty string for unknown field type', () => {

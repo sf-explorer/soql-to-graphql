@@ -1,7 +1,4 @@
-const {
-  getWhereField,
-  getWhereCond,
-} = require('../build/src/whereConverter.js');
+const { getWhereField, getWhereCond } = require('../dist/index.js');
 
 describe('WhereConverter Module', () => {
   describe('getWhereField', () => {

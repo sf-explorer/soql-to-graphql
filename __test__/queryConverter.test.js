@@ -1,4 +1,4 @@
-const { getArgs, getQuery } = require('../build/src/queryConverter.js');
+const { getArgs, getQuery } = require('../dist/index.js');
 
 describe('QueryConverter Module', () => {
   describe('getArgs', () => {

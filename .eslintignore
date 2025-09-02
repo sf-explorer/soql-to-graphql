@@ -1,5 +1,6 @@
 # Build output
 build/
+dist/
 coverage/
 tmp/
 
@@ -13,3 +14,6 @@ node_modules/
 # Generated files
 *.d.ts
 *.js.map
+
+# Test files (JavaScript, not TypeScript)
+__test__/

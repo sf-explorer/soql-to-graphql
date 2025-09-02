@@ -1,4 +1,4 @@
-const { getWhereOperator } = require('../build/src/operators.js');
+const { getWhereOperator } = require('../dist/index.js');
 
 describe('Operators Module', () => {
   describe('getWhereOperator', () => {
