@@ -46,6 +46,7 @@
     "lint:fix": "eslint . --ext .ts --ext .mts --fix",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
+    "pretest:ci": "npm run build:release",
     "test:ci": "jest --coverage --watchAll=false",
     "prettier": "prettier --config .prettierrc --write .",
     "prettier:check": "prettier --check .",
