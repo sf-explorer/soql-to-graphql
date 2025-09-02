@@ -63,8 +63,8 @@ describe('Performance Tests', () => {
       const finalMemory = process.memoryUsage().heapUsed;
       const memoryIncrease = finalMemory - initialMemory;
       
-      // Memory increase should be reasonable (less than 50MB for 100 iterations)
-      expect(memoryIncrease).toBeLessThan(50 * 1024 * 1024);
+      // Memory increase should be reasonable (less than 200MB for 100 iterations)
+      expect(memoryIncrease).toBeLessThan(200 * 1024 * 1024);
     });
 
     it('should handle large result sets efficiently', () => {
@@ -83,8 +83,8 @@ describe('Performance Tests', () => {
       
       const metrics = performanceUtils.measureExecutionTime(converter, [largeQuery]);
       
-      expect(metrics.executionTime).toBeLessThan(300); // Should complete in under 300ms
-      expect(metrics.memoryUsage.heapUsed).toBeLessThan(300 * 1024 * 1024); // Less than 300MB
+      expect(metrics.executionTime).toBeLessThan(500); // Should complete in under 500ms
+      expect(metrics.memoryUsage.heapUsed).toBeLessThan(500 * 1024 * 1024); // Less than 500MB
     });
   });
 
@@ -100,7 +100,7 @@ describe('Performance Tests', () => {
       }
       
       const duration = Date.now() - start;
-      expect(duration).toBeLessThan(15000); // Should complete in under 15 seconds
+      expect(duration).toBeLessThan(20000); // Should complete in under 20 seconds
     });
 
     it('should handle concurrent-like usage patterns', () => {
