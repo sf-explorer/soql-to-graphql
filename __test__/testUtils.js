@@ -115,54 +115,7 @@ const testData = {
   ],
 };
 
-/**
- * Performance testing utilities
- */
-const performanceUtils = {
-  /**
-   * Measures execution time of a function
-   * @param {Function} fn - Function to measure
-   * @param {Array} args - Arguments to pass to the function
-   * @returns {Object} Performance metrics
-   */
-  measureExecutionTime(fn, args = []) {
-    const start = process.hrtime.bigint();
-    const result = fn(...args);
-    const end = process.hrtime.bigint();
 
-    return {
-      result,
-      executionTime: Number(end - start) / 1000000, // Convert to milliseconds
-      memoryUsage: process.memoryUsage(),
-    };
-  },
-
-  /**
-   * Runs a function multiple times and returns average metrics
-   * @param {Function} fn - Function to benchmark
-   * @param {Array} args - Arguments to pass to the function
-   * @param {number} iterations - Number of iterations to run
-   * @returns {Object} Average performance metrics
-   */
-  benchmark(fn, args = [], iterations = 100) {
-    const times = [];
-    const memoryUsages = [];
-
-    for (let i = 0; i < iterations; i++) {
-      const metrics = this.measureExecutionTime(fn, args);
-      times.push(metrics.executionTime);
-      memoryUsages.push(metrics.memoryUsage.heapUsed);
-    }
-
-    return {
-      averageTime: times.reduce((a, b) => a + b, 0) / times.length,
-      minTime: Math.min(...times),
-      maxTime: Math.max(...times),
-      averageMemory:
-        memoryUsages.reduce((a, b) => a + b, 0) / memoryUsages.length,
-    };
-  },
-};
 
 module.exports = {
   createMockCondition,
@@ -170,5 +123,4 @@ module.exports = {
   createMockQuery,
   validateGraphQLStructure,
   testData,
-  performanceUtils,
 };

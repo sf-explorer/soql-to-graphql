@@ -8,7 +8,7 @@ Brief description of the changes made in this PR.
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
 - [ ] Documentation update
-- [ ] Performance improvement
+
 - [ ] Code refactoring
 - [ ] Test improvements
 
@@ -23,7 +23,7 @@ Brief description of the changes made in this PR.
 - [ ] All existing tests pass
 - [ ] New tests added for new functionality
 - [ ] Manual testing completed
-- [ ] Performance testing completed (if applicable)
+
 
 ## Checklist
 
