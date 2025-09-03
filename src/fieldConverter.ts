@@ -1,6 +1,32 @@
 import { QueryBase } from './types';
 import { ID_FIELD, TO_LABEL_FUNCTION, FIELD_TYPES } from './constants';
-import { getQuery } from './queryConverter';
+
+/**
+ * Helper function to convert subquery to GraphQL format
+ * @param subquery - The subquery object
+ * @returns GraphQL-compatible subquery object
+ */
+function convertSubquery(subquery: unknown): Record<string, unknown> {
+  const subqueryObj = subquery as QueryBase;
+
+  const pageInfo = subqueryObj.limit
+    ? {
+        pageInfo: {
+          endCursor: true,
+          hasNextPage: true,
+          hasPreviousPage: true,
+        },
+      }
+    : {};
+
+  return {
+    __args: {},
+    edges: {
+      node: getQueryNode(subqueryObj),
+    },
+    ...pageInfo,
+  };
+}
 
 /**
  * Converts a SOQL field to GraphQL format
@@ -52,7 +78,7 @@ export function getField(
   }
 
   if (fieldObj.type === FIELD_TYPES.FIELD_SUBQUERY) {
-    return getQuery(fieldObj.subquery as QueryBase);
+    return convertSubquery(fieldObj.subquery);
   }
 
   return '';

@@ -1,0 +1,72 @@
+# Cursor Rules for SOQL to GraphQL Converter
+
+## 🎯 Automatic Code Formatting
+
+### Prettier Auto-formatting Rule
+**ALWAYS run Prettier when you change code!**
+
+- **Trigger**: Any code file changes (`.ts`, `.js`, `.json`, `.md`, `.yml`, `.yaml`)
+- **Action**: Run `npm run prettier` to format the code
+- **Command**: `npm run prettier`
+- **Scope**: All modified files in the workspace
+
+### Git Hooks (Already Configured!)
+✅ **Pre-commit hook is already set up with lint-staged!**
+- Prettier runs automatically on staged files when you commit
+- ESLint auto-fix runs on TypeScript/JavaScript files
+- No manual formatting needed for commits
+
+### Manual Formatting Commands
+```bash
+# Format all files
+npm run prettier
+
+# Check formatting without changing files
+npm run prettier:check
+
+# Fix ESLint issues
+npm run lint:fix
+```
+
+## 📋 Code Quality Standards
+- ✅ Always maintain consistent code formatting using Prettier
+- ✅ Ensure all TypeScript files pass type checking
+- ✅ Run linting to catch any code style issues
+- ✅ Maintain high test coverage (currently 98.14%)
+
+## 🔄 Pre-commit Checklist
+Before committing code changes:
+1. ✅ Prettier runs automatically via lint-staged
+2. ✅ ESLint auto-fix runs automatically via lint-staged
+3. Run `npm test` to ensure all tests pass
+4. Run `npm run type-check` to verify TypeScript types
+5. Run `npm run build` to ensure build succeeds
+
+## 📁 File Types to Format
+- TypeScript files (`.ts`, `.mts`)
+- JavaScript files (`.js`, `.mjs`)
+- JSON files (`.json`)
+- Markdown files (`.md`)
+- YAML files (`.yml`, `.yaml`)
+- Configuration files (`.eslintrc`, `.prettierrc`, etc.)
+
+## 🚫 Excluded Files
+- `node_modules/`
+- `dist/`
+- `coverage/`
+- Generated files
+- Binary files
+
+## ⚡ Quick Commands
+```bash
+# Format everything
+npm run prettier
+
+# Check quality
+npm run ci
+
+# Quick test
+npm test
+```
+
+**Remember: Prettier runs automatically on commit, but you can also run it manually anytime!**

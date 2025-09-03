@@ -15,6 +15,8 @@ const config = {
     '!dist/**/*.test.js',
     '!dist/**/*.spec.js',
   ],
+  // Add modulePathIgnorePatterns to avoid Haste module naming collision
+  modulePathIgnorePatterns: ['<rootDir>/dist/'],
 };
 
 module.exports = config;
